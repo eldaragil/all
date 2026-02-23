@@ -92,7 +92,7 @@ Connection conn = null;
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 710, 170, 60));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ukk/login_register/Login.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/Login.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,7 +129,7 @@ Connection conn = null;
 
     try {
 
-        String sql = "SELECT nik, role FROM user WHERE nik=? AND password=?";
+        String sql = "SELECT nik, role FROM pelapor WHERE nik=? AND password=?";
         pst = conn.prepareStatement(sql);
         pst.setString(1, nik);
         pst.setString(2, password);

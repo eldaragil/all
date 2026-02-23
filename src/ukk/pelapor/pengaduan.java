@@ -306,7 +306,7 @@ public class pengaduan extends javax.swing.JFrame {
                 btn_uploadActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_upload, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 370, -1, -1));
+        jPanel1.add(btn_upload, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 400, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -446,7 +446,7 @@ public class pengaduan extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_namaActionPerformed
 
     private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
-        String sql = "select * from user where nik='" + txt_nik.getText() + "'";  
+        String sql = "select * from pelapor where nik='" + txt_nik.getText() + "'";  
         try {
             
             

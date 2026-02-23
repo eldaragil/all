@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package riwayat;
+package riwayat_p;
+import riwayat.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -27,7 +28,7 @@ import ukk.session;
  *
  * @author ASUS
  */
-public class RiwayatAspirasi extends javax.swing.JFrame {
+public class RiwayatAspirasiP extends javax.swing.JFrame {
 
     /**
      * Creates new form RiwayatAspirasi
@@ -35,7 +36,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
    
     PreparedStatement pst = null;
    
-    public RiwayatAspirasi() {
+    public RiwayatAspirasiP() {
         initComponents();
         load_riwayat();
     
@@ -115,8 +116,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         btn_filter = new javax.swing.JButton();
         lbl_total = new javax.swing.JLabel();
         btn_detail = new javax.swing.JButton();
-        btn_cetak_filter = new javax.swing.JButton();
-        btn_cetak_all = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -169,20 +168,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
             }
         });
 
-        btn_cetak_filter.setText("Cetak Filter");
-        btn_cetak_filter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cetak_filterActionPerformed(evt);
-            }
-        });
-
-        btn_cetak_all.setText("Cetak Semua");
-        btn_cetak_all.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cetak_allActionPerformed(evt);
-            }
-        });
-
         jButton1.setText("Refresh");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -229,13 +214,9 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
                     .addComponent(lbl_total)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btn_detail)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_cetak_filter)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_cetak_all)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)))
                 .addContainerGap(201, Short.MAX_VALUE))
         );
@@ -265,8 +246,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_detail)
-                    .addComponent(btn_cetak_filter)
-                    .addComponent(btn_cetak_all)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addContainerGap(141, Short.MAX_VALUE))
@@ -336,33 +315,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btn_filterActionPerformed
 
-    private void btn_cetak_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetak_filterActionPerformed
-        // TODO add your handling code here:                                                                                               
-    try {
-        if (tgl_dari.getDate() == null || tgl_sampai.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Pilih tanggal filter dulu sebelum cetak!");
-            return;
-        }
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.HashMap parameter = new java.util.HashMap();
-        
-        parameter.put("tgl_awal", sdf.format(tgl_dari.getDate()));
-        parameter.put("tgl_akhir", sdf.format(tgl_sampai.getDate()));
-
-        // Lokasi file pastikan huruf besar kecilnya sama dengan di folder project
-        java.io.File reportFile = new java.io.File("src/report/laporan_riwayat.jasper");
-        
-        // PERBAIKAN: Menggunakan ukk.koneksiDB.getKoneksi()
-        java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
-        
-        JasperPrint jp = JasperFillManager.fillReport(reportFile.getPath(), parameter, conn);
-        JasperViewer.viewReport(jp, false);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Cetak Gagal: " + e.getMessage());
-    }
-    }//GEN-LAST:event_btn_cetak_filterActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here
     txt_cari_nama.setText("");        // Mengosongkan kolom cari
@@ -420,45 +372,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     this.dispose();
 
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void btn_cetak_allActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetak_allActionPerformed
-        // TODO add your handling code here:                                            
-     // 1. Pastikan koneksi tidak null
-        Connection conn = Koneksi.Koneksi.KoneksiDB(); 
-        if (conn == null) {
-            JOptionPane.showMessageDialog(null, "Koneksi Database Gagal!");
-            return;
-        }
-        
-    String sql = "SELECT\n" +
-"     aspirasi.`id_aspirasi` AS aspirasi_id_aspirasi,\n" +
-"     aspirasi.`nik` AS aspirasi_nik,\n" +
-"     aspirasi.`nama` AS aspirasi_nama,\n" +
-"     aspirasi.`isi_aspirasi` AS aspirasi_isi_aspirasi,\n" +
-"     aspirasi.`status` AS aspirasi_status,\n" +
-"     aspirasi.`tanggal` AS aspirasi_tanggal\n" + // Kolom feedback dihapus dari sini
-"FROM\n" +
-"     `aspirasi` aspirasi";
-try {
-     pst = conn.prepareStatement(sql);   // Buat PreparedStatement dengan query
-    ResultSet rp = pst.executeQuery(); 
-    JasperPrint jasperPrint;
-    JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
-    JasperReport jasperReport = JasperCompileManager.compileReport("D:\\buiza\\ukk\\src\\ukk\\ReportUKK\\laporan_aspirasi.jrxml");
-    jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
-    JRViewer aViewer = new JRViewer(jasperPrint);
-    JDialog viewer = new JDialog();
-    viewer.setTitle(". laporan Report : .");
-    viewer.setAlwaysOnTop (true);
-    viewer.getContentPane().add(aViewer);
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    viewer.setBounds (0, 0, screenSize.width, screenSize.height);
-    viewer.setVisible(true);
-}  catch (Exception e) {
-    JOptionPane.showMessageDialog(null, "Laporan gak ada: " + e.getMessage());
-    e.printStackTrace();
-}
-    }//GEN-LAST:event_btn_cetak_allActionPerformed
 
     private void txt_cari_namaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cari_namaKeyReleased
         // TODO add your handling code here:                                        
@@ -525,27 +438,26 @@ try {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RiwayatAspirasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiwayatAspirasiP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RiwayatAspirasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiwayatAspirasiP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RiwayatAspirasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiwayatAspirasiP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RiwayatAspirasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RiwayatAspirasiP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RiwayatAspirasi().setVisible(true);
+                new RiwayatAspirasiP().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_cetak_all;
-    private javax.swing.JButton btn_cetak_filter;
     private javax.swing.JButton btn_detail;
     private javax.swing.JButton btn_filter;
     private javax.swing.JComboBox<String> cb_kategori;

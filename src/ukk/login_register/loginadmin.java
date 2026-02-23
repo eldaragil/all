@@ -22,12 +22,12 @@ import ukk.session;
  *
  * @author ASUS TUF GAMING
  */
-public class loginpelapor extends javax.swing.JFrame {
+public class loginadmin extends javax.swing.JFrame {
 Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
 
-    public loginpelapor() {
+    public loginadmin() {
          initComponents();
         conn = Koneksi.KoneksiDB();
         this.setLocationRelativeTo(null);
@@ -93,7 +93,7 @@ Connection conn = null;
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 710, 170, 60));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ukk/login_register/Login.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/Login.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,21 +188,23 @@ if (usernameTxt.getText().isEmpty() || passwordTxt.getText().isEmpty()) {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(loginpelapor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(loginpelapor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(loginpelapor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(loginpelapor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new loginpelapor().setVisible(true);
+                new loginadmin().setVisible(true);
             }
         });
     }

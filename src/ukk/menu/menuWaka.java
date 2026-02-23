@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package ukk.menu;
-import riwayat.RiwayatWaka1;
+import ukk.waka.RiwayatWaka1;
 import ukk.login_register.login;
 import ukk.waka.verivikasiwaka;
 //import ukk.formTransaksi;
@@ -72,7 +72,7 @@ public class menuWaka extends javax.swing.JFrame {
         });
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 870, 170, 50));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ukk/menu/menu waka (1).png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/menu waka (1).png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -4, 1920, 1060));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

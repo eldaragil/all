@@ -115,12 +115,10 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         txt_nik = new javax.swing.JTextField();
         txt_nama = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_isi = new javax.swing.JTextArea();
-        cb_status = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbAspirasi = new javax.swing.JTable();
         txt_cari = new javax.swing.JTextField();
@@ -132,12 +130,12 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btn_simpan = new javax.swing.JButton();
         btn_hapus = new javax.swing.JButton();
-        btn_cetak = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         cb_kategori = new javax.swing.JComboBox<>();
         cb_statusfil = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,9 +153,6 @@ public class Aspirasi_peng extends javax.swing.JFrame {
 
         jLabel4.setText("Isi Aspirasi");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 241, -1, -1));
-
-        jLabel5.setText("Status");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 375, -1, -1));
 
         txt_nik.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,14 +175,6 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txt_isi);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 246, 239, 115));
-
-        cb_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terimakasih", "diterapkan", " " }));
-        cb_status.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cb_statusActionPerformed(evt);
-            }
-        });
-        jPanel1.add(cb_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 372, 239, -1));
 
         tbAspirasi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -264,15 +251,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
                 btn_hapusActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_hapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 410, -1, -1));
-
-        btn_cetak.setText("Cetak");
-        btn_cetak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cetakActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btn_cetak, new org.netbeans.lib.awtextra.AbsoluteConstraints(347, 410, -1, -1));
+        jPanel1.add(btn_hapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 410, -1, -1));
 
         jLabel8.setText("Kategori");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 209, -1, -1));
@@ -309,6 +288,9 @@ public class Aspirasi_peng extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 410, -1, -1));
+
+        jButton3.setText("delete");
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -376,7 +358,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         // KUNCI DISINI: Agar admin tidak bisa mengubah
         cb_kategori.setEnabled(false); 
         
-        cb_status.setSelectedItem(tbAspirasi.getValueAt(i, 5).toString());
+//        cb_status.setSelectedItem(tbAspirasi.getValueAt(i, 5).toString());
         
         try {
             java.util.Date date = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(tbAspirasi.getValueAt(i, 6).toString());
@@ -392,23 +374,6 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     private void txt_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_cariActionPerformed
-
-    private void cb_statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_statusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_statusActionPerformed
-
-    private void btn_cetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetakActionPerformed
-        // TODO add your handling code here :  
-       String idAspirasi = txt_id.getText();
-    
-    if (idAspirasi.equals("")) {
-        JOptionPane.showMessageDialog(this, "Silakan pilih data di tabel terlebih dahulu!");
-    } else {
-        // Panggil method tanpa menuliskan tipe data 'String' lagi
-        cetakStruk(idAspirasi);
-    }
-
-    }//GEN-LAST:event_btn_cetakActionPerformed
 
     private void txt_nikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nikActionPerformed
         // TODO add your handling code here:
@@ -426,7 +391,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     txt_nama.setText("");         
     txt_tanggal.setDate(null);    
     txt_isi.setText("");          
-    cb_status.setSelectedIndex(0); 
+//    cb_status.setSelectedIndex(0); 
     txt_cari.setText("");         
 
     // 2. Pengaturan Kunci
@@ -490,7 +455,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     }//GEN-LAST:event_cb_statusfilActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-                String sql = "select * from user where nik='" + txt_nik.getText() + "'";  
+                String sql = "select * from pelapor where nik='" + txt_nik.getText() + "'";  
         try {
             
             
@@ -574,21 +539,19 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_cetak;
     private javax.swing.JButton btn_hapus;
     private javax.swing.JButton btn_refresh;
     private javax.swing.JButton btn_simpan;
     private javax.swing.JComboBox<String> cb_filter;
     private javax.swing.JComboBox<String> cb_kategori;
-    private javax.swing.JComboBox<String> cb_status;
     private javax.swing.JComboBox<String> cb_statusfil;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -614,7 +577,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     model.addColumn("Tanggal"); 
 
     try {
-        java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
+        //java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
 //        String sql = "SELECT * FROM aspirasi ORDER BY tanggal ASC";
 //        java.sql.ResultSet res = conn.createStatement().executeQuery(sql);
         String sql = "SELECT * FROM aspirasi WHERE nik = ? ORDER BY tanggal ASC";
@@ -624,7 +587,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         
         while(res.next()){
             String nik = res.getString("nik");
-           /// String nisn = res.getString("nisn");
+           ///// String nisn = res.getString("nisn");
             String identitasTampil = res.getString("nik");
 
 

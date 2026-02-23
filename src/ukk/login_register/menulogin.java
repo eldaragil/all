@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ukk.menu;
+package ukk.login_register;
 
 import static sun.security.jgss.GSSUtil.login;
 import ukk.login_register.login;
-import ukk.login_register.loginpelapor;
+import ukk.login_register.loginadmin;
 import ukk.waka.verivikasiwaka;
 
 /**
@@ -37,14 +37,14 @@ public class menulogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("pelapor");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("petugas");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -56,11 +56,11 @@ public class menulogin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addGap(75, 75, 75)
                 .addComponent(jButton2)
-                .addGap(98, 98, 98))
+                .addGap(64, 64, 64)
+                .addComponent(jButton1)
+                .addContainerGap(121, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,7 +83,7 @@ public class menulogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        loginpelapor menu = new loginpelapor();
+        loginadmin menu = new loginadmin();
     menu.setVisible(true);
     this.dispose();
         // TODO add your handling code here:

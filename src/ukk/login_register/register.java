@@ -76,7 +76,7 @@ public class register extends javax.swing.JFrame {
                 txt_nikActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_nik, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 340, 560, 40));
+        jPanel1.add(txt_nik, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 330, 580, 60));
 
         txt_nama.setBackground(new java.awt.Color(0,0,0,0));
         txt_nama.setBorder(null);
@@ -85,11 +85,11 @@ public class register extends javax.swing.JFrame {
                 txt_namaActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 480, 560, 40));
+        jPanel1.add(txt_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 460, 580, 60));
 
         txt_password.setBackground(new java.awt.Color(0,0,0,0));
         txt_password.setBorder(null);
-        jPanel1.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 620, 560, 40));
+        jPanel1.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 590, 580, 60));
 
         jButton4.setBackground(new java.awt.Color(0,0,0,0));
         jButton4.setBorder(null);
@@ -98,7 +98,7 @@ public class register extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 740, 450, 40));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 690, 450, 60));
 
         jButton5.setBackground(new java.awt.Color(0,0,0,0));
         jButton5.setBorder(null);
@@ -107,10 +107,10 @@ public class register extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 820, 130, 30));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1600, 770, 130, 30));
 
         jLabel8.setBackground(new java.awt.Color(0,0,0,0));
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ukk/login_register/regsitrasi 2.png"))); // NOI18N
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/Register.png"))); // NOI18N
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 1920, 1090));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

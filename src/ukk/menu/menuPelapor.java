@@ -8,7 +8,10 @@ package ukk.menu;
 //import ukk.formCRUDBarang;
 
 import riwayat.RiwayatAspirasi;
+import riwayat.RiwayatTanggapanAdmin;
 import riwayat.datapengaduan;
+import riwayat_p.RiwayatAspirasiP;
+import riwayat_p.RiwayatTanggapanP;
 import ukk.login_register.login;
 import ukk.login_register.login;
 import ukk.pelapor.pengaduan;
@@ -98,7 +101,7 @@ public class menuPelapor extends javax.swing.JFrame {
         });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1390, 720, 360, 47));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ukk/menu/menu pelapor.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/menu pelapor.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -132,8 +135,8 @@ public class menuPelapor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        datapengaduan datapengaduan= new datapengaduan();
-        datapengaduan.setVisible(true);
+        RiwayatTanggapanP RiwayatTanggapanP= new RiwayatTanggapanP();
+        RiwayatTanggapanP.setVisible(true);
         this.setVisible(false);
         this.dispose();
 //        // TODO add your handling code here:
@@ -148,8 +151,8 @@ public class menuPelapor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-      RiwayatAspirasi RiwayatAspirasi = new RiwayatAspirasi();
-        RiwayatAspirasi.setVisible(true);
+      RiwayatAspirasiP RiwayatAspirasiP = new RiwayatAspirasiP();
+        RiwayatAspirasiP.setVisible(true);
         this.setVisible(false);
         this.dispose();
         // TODO add your handling code here:
