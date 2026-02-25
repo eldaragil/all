@@ -44,6 +44,7 @@ public class registrasiWaka extends javax.swing.JFrame {
         model = new DefaultTableModel();
         jTable1.setModel(model);
         model.addColumn("id_petugas");
+        model.addColumn("nama");
         model.addColumn("Username");
         model.addColumn("Role");
         getData();//memanggil method getdata
@@ -63,9 +64,10 @@ void getData() {
         while (rs.next()) {
             Object[] obj = new Object[4];
             obj[0] = rs.getString("id_petugas");
-            obj[1] = rs.getString("username");
+            obj[1] = rs.getString("nama");
+            obj[2] = rs.getString("username");
             //obj[2] = rs.getString("");
-            obj[2] = rs.getString("role");
+            obj[3] = rs.getString("role");
             model.addRow(obj);
         }
     } catch (Exception e) {
@@ -83,6 +85,7 @@ void getData() {
        txt_id.setText("");
        txt_password.setText("");
        txt_username.setText("");
+       txt_nama.setText("");
        cmb_cari.setSelectedItem("");
        
    }
@@ -124,31 +127,36 @@ void getData() {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         cmb_role = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         txt_id = new javax.swing.JTextField();
+        txt_nama = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrasi Masyarakat");
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        txt_username.setBackground(new java.awt.Color(0,0,0,0));
+        txt_username.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_username.setBorder(null);
-        jPanel1.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 220, 20));
+        jPanel1.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 440, 390, 50));
 
+        txt_password.setBackground(new java.awt.Color(0,0,0,0));
+        txt_password.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_password.setBorder(null);
-        jPanel1.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, 220, 20));
+        jPanel1.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 510, 390, 50));
 
+        txt_cari.setBackground(new java.awt.Color(0,0,0,0));
+        txt_cari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_cari.setBorder(null);
         txt_cari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_cariActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 90, 200, 20));
+        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 220, 700, 50));
 
+        cmb_cari.setBackground(new java.awt.Color(0,0,0,0));
         cmb_cari.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NAMA" }));
         cmb_cari.setBorder(null);
         cmb_cari.addActionListener(new java.awt.event.ActionListener() {
@@ -156,9 +164,9 @@ void getData() {
                 cmb_cariActionPerformed(evt);
             }
         });
-        jPanel1.add(cmb_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 80, 20));
+        jPanel1.add(cmb_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(1580, 220, 120, 50));
 
-        jButton6.setText("cari");
+        jButton6.setBackground(new java.awt.Color(0,0,0,0));
         jButton6.setBorder(null);
         jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -170,52 +178,52 @@ void getData() {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, 60, 20));
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1730, 220, 130, 50));
 
-        jButton4.setText("save");
+        jButton4.setBackground(new java.awt.Color(0,0,0,0));
         jButton4.setBorder(null);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 290, 50, 20));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 680, 90, 40));
 
-        jButton1.setText("update");
+        jButton1.setBackground(new java.awt.Color(0,0,0,0));
         jButton1.setBorder(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, 50, 20));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 680, 80, 40));
 
-        jButton2.setText("refresh");
+        jButton2.setBackground(new java.awt.Color(0,0,0,0));
         jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 290, 50, 20));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 680, 80, 40));
 
-        jButton5.setText("exit");
+        jButton5.setBackground(new java.awt.Color(0,0,0,0));
         jButton5.setBorder(null);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 50, 20));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 680, 90, 40));
 
-        jButton3.setText("delete");
+        jButton3.setBackground(new java.awt.Color(0,0,0,0));
         jButton3.setBorder(null);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, 50, 20));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 680, 80, 40));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -235,41 +243,41 @@ void getData() {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 120, 460, 160));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 320, 1010, 650));
 
+        cmb_role.setBackground(new java.awt.Color(0,0,0,0));
+        cmb_role.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cmb_role.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "admin", "waka" }));
-        jPanel1.add(cmb_role, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 220, -1));
-
-        jLabel2.setText("username");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, -1, -1));
-
-        jLabel3.setText("password");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, -1, -1));
-
-        jLabel4.setText("role");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, -1, -1));
-
-        jLabel1.setText("id");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, -1));
+        cmb_role.setBorder(null);
+        jPanel1.add(cmb_role, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 590, 390, 50));
 
         txt_id.setEditable(false);
-        txt_id.setBackground(new java.awt.Color(204, 204, 204));
+        txt_id.setBackground(new java.awt.Color(0,0,0,0));
+        txt_id.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_id.setBorder(null);
         txt_id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_idActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 220, 30));
+        jPanel1.add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 300, 390, 50));
+
+        txt_nama.setBackground(new java.awt.Color(0,0,0,0));
+        txt_nama.setBorder(null);
+        jPanel1.add(txt_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 370, 390, 50));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/regis adm.png"))); // NOI18N
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -279,17 +287,19 @@ void getData() {
         try {
 
     String id = txt_id.getText();
+    String nama = txt_nama.getText();
     String username = txt_username.getText();
     String password = txt_password.getText();
     String role = cmb_role.getSelectedItem().toString();
 
-    String sql = "UPDATE petugas SET username=?, password=?, role=? WHERE id_petugas=?";
+    String sql = "UPDATE petugas SET nama=?, username=?, password=?, role=? WHERE id_petugas=?";
 
     pst = conn.prepareStatement(sql);
-    pst.setString(1, username);
-    pst.setString(2, password);
-    pst.setString(3, role);
-    pst.setString(4, id);
+    pst.setString(1, nama);
+    pst.setString(2, username);
+    pst.setString(3, password);
+    pst.setString(4, role);
+    pst.setString(5, id);
 
     pst.executeUpdate();
 
@@ -312,11 +322,12 @@ bersih();
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
        try{
-           String sql = "insert into petugas (username, password, role)values(?,?,?)";
+           String sql = "insert into petugas (nama, username, password, role)values(?,?,?,?)";
            pst = conn.prepareStatement(sql);
-           pst.setString(1, txt_username.getText());
-           pst.setString(2, txt_password.getText());
-           pst.setString(3, cmb_role.getSelectedItem().toString());
+           pst.setString(1, txt_nama.getText());
+           pst.setString(2, txt_username.getText());
+           pst.setString(3, txt_password.getText());
+           pst.setString(4, cmb_role.getSelectedItem().toString());
            pst.execute();
            JOptionPane.showMessageDialog(null, "saved");
        } catch (Exception e) {
@@ -369,8 +380,13 @@ if (p == JOptionPane.YES_OPTION) {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        
-        this.dispose();
+    ukk.menu.menuAdmin menu = new ukk.menu.menuAdmin();
+    
+    // 2. Menampilkan Menu Admin
+    menu.setVisible(true);
+    
+    // 3. Menutup halaman Riwayat Aspirasi saat ini
+    this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -385,7 +401,7 @@ if (p == JOptionPane.YES_OPTION) {
                     
                }
               if (cmb_cari.getSelectedIndex() == 1) {
-                    sql = "SELECT * FROM petugas where username like '%" + txt_cari.getText() + "%' ";
+                    sql = "SELECT * FROM petugas where nama like '%" + txt_cari.getText() + "%' ";
                }
                 
               pst = conn.prepareStatement(sql);
@@ -394,7 +410,8 @@ if (p == JOptionPane.YES_OPTION) {
               while (rs.next()) {
                   Object[] obj = new Object[2];
                   obj[0] = rs.getString("id_petugas");
-                  obj[1] = rs.getString("username");
+                  obj[1] = rs.getString("nama");
+                  
                   
                     
                     
@@ -421,13 +438,17 @@ if (p == JOptionPane.YES_OPTION) {
 
             // Ambil data dari tabel sesuai index kolom
             String id = jTable1.getValueAt(selectedRow, 0).toString();
-            String username = jTable1.getValueAt(selectedRow, 1).toString();
-            String role = jTable1.getValueAt(selectedRow, 2).toString();
+            String nama = jTable1.getValueAt(selectedRow, 1).toString();
+            String username = jTable1.getValueAt(selectedRow, 2).toString();
+            String role = jTable1.getValueAt(selectedRow, 3).toString();
+            
 
             // Masukkan ke field
             txt_id.setText(id);
+            txt_nama.setText(nama);
             txt_username.setText(username);
             cmb_role.setSelectedItem(role);  // Untuk JComboBox
+            
 
         }
     }
@@ -491,15 +512,13 @@ if (p == JOptionPane.YES_OPTION) {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txt_cari;
     private javax.swing.JTextField txt_id;
+    private javax.swing.JTextField txt_nama;
     private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables

@@ -5,6 +5,7 @@
  */
 package riwayat;
 
+import java.awt.BorderLayout;
 import ukk.pelapor.*;
 import ukk.*;
 import java.sql.Connection;
@@ -23,7 +24,10 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.table.TableModel;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -142,6 +146,7 @@ public class datapengaduan extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txt_cari = new javax.swing.JTextField();
         lbl_total = new javax.swing.JLabel();
+        btn_detail = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PENGADUAN");
@@ -155,7 +160,7 @@ public class datapengaduan extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 50, 20));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 400, 50, 20));
 
         jButton7.setText("exit");
         jButton7.setBorder(null);
@@ -164,7 +169,7 @@ public class datapengaduan extends javax.swing.JFrame {
                 jButton7ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 50, 20));
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, 50, 20));
 
         filtter.setText("filter");
         filtter.setBorder(null);
@@ -225,6 +230,14 @@ public class datapengaduan extends javax.swing.JFrame {
 
         lbl_total.setText("TOTAL:");
         jPanel1.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, -1, -1));
+
+        btn_detail.setText("detail");
+        btn_detail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_detailActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn_detail, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -432,6 +445,75 @@ public class datapengaduan extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_cariKeyReleased
 
+    private void btn_detailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_detailActionPerformed
+        int baris = jTable1.getSelectedRow();
+
+    if (baris == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!");
+        return;
+    }
+
+    try {
+        String idPengaduan = jTable1.getValueAt(baris, 0).toString();
+
+        String sql = "SELECT * FROM pengaduan WHERE id_pengaduan = ?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, idPengaduan);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+
+            // ================= TEXT DETAIL =================
+            String detail =
+                    "ID Pengaduan : " + rs.getString("id_pengaduan") + "\n" +
+                    "NIK          : " + rs.getString("nik") + "\n" +
+                    "Nama         : " + rs.getString("nama") + "\n" +
+                    "Tanggal      : " + rs.getString("tgl_pengaduan") + "\n" +
+                    "Kategori     : " + rs.getString("Kategori") + "\n" +
+                    "Lokasi       : " + rs.getString("lokasi") + "\n" +
+                    "Status       : " + rs.getString("status") + "\n\n" +
+                    "Isi Laporan  :\n" + rs.getString("isi_laporan");
+
+            JTextArea textArea = new JTextArea(detail);
+            textArea.setWrapStyleWord(true);
+            textArea.setLineWrap(true);
+            textArea.setEditable(false);
+            textArea.setBackground(null);
+
+            // ================= FOTO =================
+            String pathFoto = rs.getString("foto");
+            JLabel lblFoto = new JLabel();
+
+            if (pathFoto != null && !pathFoto.isEmpty()) {
+
+                ImageIcon icon = new ImageIcon(pathFoto);
+                Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+                lblFoto.setIcon(new ImageIcon(img));
+
+            } else {
+                lblFoto.setText("Foto tidak tersedia");
+            }
+
+            // ================= PANEL UTAMA =================
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout(10,10));
+
+            panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+            panel.add(lblFoto, BorderLayout.EAST);
+
+            panel.setPreferredSize(new Dimension(650, 350));
+
+            JOptionPane.showMessageDialog(this, panel, "Detail Pengaduan", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menampilkan detail: " + e.getMessage());
+    }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_detailActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -475,6 +557,7 @@ public class datapengaduan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_detail;
     private javax.swing.JComboBox<String> cmb_kategori;
     private javax.swing.JButton filtter;
     private javax.swing.JButton jButton3;

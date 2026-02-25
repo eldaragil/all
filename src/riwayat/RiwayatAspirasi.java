@@ -21,7 +21,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.swing.JRViewer;
 import net.sf.jasperreports.view.JasperViewer;
-import ukk.session;
+
 
 /**
  *
@@ -50,49 +50,38 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     model.addColumn("Kategori");
     model.addColumn("Status");
 
-    try {
-        int no = 1;
+   try {
+    int no = 1;
 
-        Connection conn = Koneksi.Koneksi.KoneksiDB();
-        PreparedStatement pst;
-        ResultSet res;
+    Connection conn = Koneksi.Koneksi.KoneksiDB();
+    PreparedStatement pst;
+    ResultSet res;
 
-        // 🔥 LOGIKA ROLE DISINI
-        if (session.getRole().equalsIgnoreCase("admin")) {
+    // 🔥 Tanpa session → selalu tampil semua
+    String sql = "SELECT * FROM aspirasi ORDER BY tanggal DESC";
+    pst = conn.prepareStatement(sql);
 
-            // ADMIN → tampil semua
-            String sql = "SELECT * FROM aspirasi ORDER BY tanggal DESC";
-            pst = conn.prepareStatement(sql);
+    res = pst.executeQuery();
 
-        } else {
-
-            // PELAPOR → hanya sesuai NIK
-            String sql = "SELECT * FROM aspirasi WHERE nik = ? ORDER BY tanggal DESC";
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, session.getNik());
-        }
-
-        res = pst.executeQuery();
-
-        while (res.next()) {
-            model.addRow(new Object[]{
-                no++,
-                res.getString("tanggal"),
-                res.getString("nama"),
-                res.getString("isi_aspirasi"),
-                res.getString("kategori"),
-                res.getString("status")
-            });
-        }
-
-        tb_riwayat.setModel(model);
-        lbl_total.setText("TOTAL DATA: " + tb_riwayat.getRowCount() + " Aspirasi");
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Gagal Load Data: " + e.getMessage());
+    while (res.next()) {
+        model.addRow(new Object[]{
+            no++,
+            res.getString("tanggal"),
+            res.getString("nama"),
+            res.getString("isi_aspirasi"),
+            res.getString("kategori"),
+            res.getString("status")
+        });
     }
 
+    tb_riwayat.setModel(model);
+    lbl_total.setText("TOTAL DATA: " + tb_riwayat.getRowCount() + " Aspirasi");
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Gagal Load Data: " + e.getMessage());
 }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,8 +99,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         cb_kategori = new javax.swing.JComboBox<>();
         tgl_dari = new com.toedter.calendar.JDateChooser();
         tgl_sampai = new com.toedter.calendar.JDateChooser();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         btn_filter = new javax.swing.JButton();
         lbl_total = new javax.swing.JLabel();
         btn_detail = new javax.swing.JButton();
@@ -122,6 +109,8 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tb_riwayat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,6 +125,11 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tb_riwayat);
 
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 310, 1620, 570));
+
+        txt_cari_nama.setBackground(new java.awt.Color(0,0,0,0));
+        txt_cari_nama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_cari_nama.setBorder(null);
         txt_cari_nama.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_cari_namaActionPerformed(evt);
@@ -146,131 +140,80 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
                 txt_cari_namaKeyReleased(evt);
             }
         });
+        jPanel1.add(txt_cari_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 740, 50));
 
+        cb_kategori.setBackground(new java.awt.Color(0,0,0,0));
+        cb_kategori.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nama", "Kategori" }));
+        cb_kategori.setBorder(null);
+        jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 180, 210, 50));
 
-        jLabel1.setText("Dari");
+        tgl_dari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel1.add(tgl_dari, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, 280, 30));
 
-        jLabel2.setText("Sampai");
+        tgl_sampai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel1.add(tgl_sampai, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 250, 250, 30));
 
-        btn_filter.setText("Filter");
+        btn_filter.setBackground(new java.awt.Color(0,0,0,0));
         btn_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filterActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 240, 150, 50));
 
+        lbl_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lbl_total.setText("TOTAL DATA :");
+        jPanel1.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 960, -1, -1));
 
-        btn_detail.setText("Detail");
+        btn_detail.setBackground(new java.awt.Color(0,0,0,0));
+        btn_detail.setBorder(null);
         btn_detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_detailActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_detail, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 950, 120, 40));
 
-        btn_cetak_filter.setText("Cetak Filter");
+        btn_cetak_filter.setBackground(new java.awt.Color(0,0,0,0));
+        btn_cetak_filter.setBorder(null);
         btn_cetak_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cetak_filterActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_cetak_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 950, 120, 40));
 
-        btn_cetak_all.setText("Cetak Semua");
+        btn_cetak_all.setBackground(new java.awt.Color(0,0,0,0));
+        btn_cetak_all.setBorder(null);
         btn_cetak_all.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cetak_allActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_cetak_all, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 950, 110, 40));
 
-        jButton1.setText("Refresh");
+        jButton1.setBackground(new java.awt.Color(0,0,0,0));
+        jButton1.setBorder(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 950, 110, 40));
 
-        jButton2.setText("Exit");
+        jButton2.setBackground(new java.awt.Color(0,0,0,0));
+        jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 950, 120, 40));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        jLabel3.setText("RIWAYAT ASPIRASI");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(tgl_dari, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(35, 35, 35)
-                            .addComponent(jLabel2)
-                            .addGap(18, 18, 18)
-                            .addComponent(tgl_sampai, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(29, 29, 29)
-                            .addComponent(btn_filter))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(127, 127, 127))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(txt_cari_nama, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(cb_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(lbl_total)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btn_detail)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_cetak_filter)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_cetak_all)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
-                .addContainerGap(201, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jLabel3)
-                .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txt_cari_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tgl_dari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(tgl_sampai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cb_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_filter)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lbl_total)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_detail)
-                    .addComponent(btn_cetak_filter)
-                    .addComponent(btn_cetak_all)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(141, Short.MAX_VALUE))
-        );
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/riwayat aspirasi adm.png"))); // NOI18N
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-6, -2, 1930, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -280,9 +223,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -351,7 +292,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         parameter.put("tgl_akhir", sdf.format(tgl_sampai.getDate()));
 
         // Lokasi file pastikan huruf besar kecilnya sama dengan di folder project
-        java.io.File reportFile = new java.io.File("src/report/laporan_riwayat.jasper");
+        java.io.File reportFile = new java.io.File("src/report/LAPASFILL.jasper");
         
         // PERBAIKAN: Menggunakan ukk.koneksiDB.getKoneksi()
         java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
@@ -411,7 +352,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         // TODO add your handling code here:                                        
     // 1. Memanggil objek Menu Admin
     // Sesuaikan nama class dengan file menu utama Anda (berdasarkan gambar: menuAdmin)
-    ukk.menu.menuPelapor menu = new ukk.menu.menuPelapor();
+    ukk.menu.menuAdmin menu = new ukk.menu.menuAdmin();
     
     // 2. Menampilkan Menu Admin
     menu.setVisible(true);
@@ -422,42 +363,54 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btn_cetak_allActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetak_allActionPerformed
-        // TODO add your handling code here:                                            
-     // 1. Pastikan koneksi tidak null
-        Connection conn = Koneksi.Koneksi.KoneksiDB(); 
-        if (conn == null) {
-            JOptionPane.showMessageDialog(null, "Koneksi Database Gagal!");
-            return;
-        }
-        
-    String sql = "SELECT\n" +
-"     aspirasi.`id_aspirasi` AS aspirasi_id_aspirasi,\n" +
-"     aspirasi.`nik` AS aspirasi_nik,\n" +
-"     aspirasi.`nama` AS aspirasi_nama,\n" +
-"     aspirasi.`isi_aspirasi` AS aspirasi_isi_aspirasi,\n" +
-"     aspirasi.`status` AS aspirasi_status,\n" +
-"     aspirasi.`tanggal` AS aspirasi_tanggal\n" + // Kolom feedback dihapus dari sini
-"FROM\n" +
-"     `aspirasi` aspirasi";
-try {
-     pst = conn.prepareStatement(sql);   // Buat PreparedStatement dengan query
-    ResultSet rp = pst.executeQuery(); 
-    JasperPrint jasperPrint;
-    JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
-    JasperReport jasperReport = JasperCompileManager.compileReport("D:\\buiza\\ukk\\src\\ukk\\ReportUKK\\laporan_aspirasi.jrxml");
-    jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
-    JRViewer aViewer = new JRViewer(jasperPrint);
-    JDialog viewer = new JDialog();
-    viewer.setTitle(". laporan Report : .");
-    viewer.setAlwaysOnTop (true);
-    viewer.getContentPane().add(aViewer);
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    viewer.setBounds (0, 0, screenSize.width, screenSize.height);
-    viewer.setVisible(true);
-}  catch (Exception e) {
-    JOptionPane.showMessageDialog(null, "Laporan gak ada: " + e.getMessage());
-    e.printStackTrace();
-}
+//           // TODO add your handling code here:                                            
+//     // 1. Pastikan koneksi tidak null
+//        Connection conn = Koneksi.Koneksi.KoneksiDB(); 
+//        if (conn == null) {
+//            JOptionPane.showMessageDialog(null, "Koneksi Database Gagal!");
+//            return;
+//        }
+        String sql = "SELECT " +
+                 "aspirasi.id_aspirasi AS aspirasi_id_aspirasi, " +
+                 "aspirasi.nik AS aspirasi_nik, " +
+                 "aspirasi.nama AS aspirasi_nama, " +
+                 "aspirasi.isi_aspirasi AS aspirasi_isi_aspirasi, " +
+                 "aspirasi.kategori AS aspirasi_kategori, " +
+                 "aspirasi.status AS aspirasi_status, " +
+                 "aspirasi.feedback AS aspirasi_feedback, " +
+                 "aspirasi.tanggal AS aspirasi_tanggal " +
+                 "FROM aspirasi ORDER BY tanggal DESC";
+
+    try {
+
+        Connection conn = Koneksi.Koneksi.KoneksiDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rp = pst.executeQuery();
+
+        JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(
+                "D:/buiza/ukk/src/report/LAPASALL.jrxml"
+        );
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
+
+        JRViewer viewer = new JRViewer(jasperPrint);
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Laporan Data Aspirasi");
+        dialog.setAlwaysOnTop(true);
+        dialog.getContentPane().add(viewer);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dialog.setBounds(0, 0, screenSize.width, screenSize.height);
+        dialog.setVisible(true);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal Cetak Laporan: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    
     }//GEN-LAST:event_btn_cetak_allActionPerformed
 
     private void txt_cari_namaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cari_namaKeyReleased
@@ -551,8 +504,6 @@ try {
     private javax.swing.JComboBox<String> cb_kategori;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

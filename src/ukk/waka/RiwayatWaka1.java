@@ -52,8 +52,8 @@ public class RiwayatWaka1 extends javax.swing.JFrame {
 
     try {
         String sql = "SELECT * FROM pengaduan "
-                   + "WHERE status IS NOT NULL AND status != '' "
-                   + "ORDER BY tgl_pengaduan ASC";
+           + "WHERE status IN ('terverifikasi','tertanggapi') "
+           + "ORDER BY tgl_pengaduan ASC";
 
         Connection conn = Koneksi.Koneksi.KoneksiDB();
         Statement stm = conn.createStatement();
@@ -102,8 +102,6 @@ public class RiwayatWaka1 extends javax.swing.JFrame {
         cb_kategori = new javax.swing.JComboBox<>();
         tgl_dari = new com.toedter.calendar.JDateChooser();
         tgl_sampai = new com.toedter.calendar.JDateChooser();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         btn_filter = new javax.swing.JButton();
         lbl_total = new javax.swing.JLabel();
         btn_detail = new javax.swing.JButton();
@@ -111,9 +109,11 @@ public class RiwayatWaka1 extends javax.swing.JFrame {
         btn_cetak_all = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tb_riwayat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,142 +128,89 @@ public class RiwayatWaka1 extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tb_riwayat);
 
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 1620, 570));
+
+        txt_cari_nama.setBackground(new java.awt.Color(0,0,0,0));
+        txt_cari_nama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_cari_nama.setBorder(null);
         txt_cari_nama.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_cari_namaKeyReleased(evt);
             }
         });
+        jPanel1.add(txt_cari_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 750, 50));
 
+        cb_kategori.setBackground(new java.awt.Color(0,0,0,0));
+        cb_kategori.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nama", "Kategori" }));
+        cb_kategori.setBorder(null);
+        jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 190, 230, 30));
 
-        jLabel1.setText("Dari");
+        tgl_dari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel1.add(tgl_dari, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 280, 30));
 
-        jLabel2.setText("Sampai");
+        tgl_sampai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel1.add(tgl_sampai, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 250, 260, 30));
 
-        btn_filter.setText("Filter");
+        btn_filter.setBackground(new java.awt.Color(0,0,0,0));
+        btn_filter.setBorder(null);
         btn_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filterActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 240, 140, 50));
 
         lbl_total.setText("TOTAL DATA :");
+        jPanel1.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 960, -1, -1));
 
-        btn_detail.setText("Detail");
+        btn_detail.setBackground(new java.awt.Color(0,0,0,0));
+        btn_detail.setBorder(null);
         btn_detail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_detailActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_detail, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 950, 110, 40));
 
-        btn_cetak_filter.setText("Cetak Filter");
+        btn_cetak_filter.setBackground(new java.awt.Color(0,0,0,0));
+        btn_cetak_filter.setBorder(null);
         btn_cetak_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cetak_filterActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_cetak_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 950, 120, 40));
 
-        btn_cetak_all.setText("Cetak Semua");
+        btn_cetak_all.setBackground(new java.awt.Color(0,0,0,0));
+        btn_cetak_all.setBorder(null);
         btn_cetak_all.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cetak_allActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_cetak_all, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 950, 120, 40));
 
-        jButton1.setText("Refresh");
+        jButton1.setBackground(new java.awt.Color(0,0,0,0));
+        jButton1.setBorder(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 950, 110, 40));
 
-        jButton2.setText("Exit");
+        jButton2.setBackground(new java.awt.Color(0,0,0,0));
+        jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 950, 110, 40));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        jLabel3.setText("RIWAYAT WAKA");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tgl_dari, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(35, 35, 35)
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(tgl_sampai, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(29, 29, 29)
-                                        .addComponent(btn_filter))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(127, 127, 127))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txt_cari_nama, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cb_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(lbl_total)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btn_detail)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn_cetak_filter)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn_cetak_all)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(98, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jLabel3)
-                .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txt_cari_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tgl_dari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(tgl_sampai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cb_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_filter)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lbl_total)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_detail)
-                    .addComponent(btn_cetak_filter)
-                    .addComponent(btn_cetak_all)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(141, Short.MAX_VALUE))
-        );
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/riwayat waka.png"))); // NOI18N
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -273,9 +220,7 @@ public class RiwayatWaka1 extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -306,7 +251,10 @@ public class RiwayatWaka1 extends javax.swing.JFrame {
         String sampai = sdf.format(tgl_sampai.getDate());
 
         int no = 1;
-        String sql = "SELECT * FROM pengaduan WHERE tgl_pengaduan BETWEEN ? AND ? ORDER BY tgl_pengaduan ASC";
+        String sql = "SELECT * FROM pengaduan "
+           + "WHERE status IN ('terverifikasi','tertanggapi') "
+           + "AND tgl_pengaduan BETWEEN ? AND ? "
+           + "ORDER BY tgl_pengaduan ASC";
         
         java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
         java.sql.PreparedStatement pst = conn.prepareStatement(sql);
@@ -523,7 +471,10 @@ try {
     try {
         String cari = txt_cari_nama.getText();
         // Query tetap sama, mencari dari depan
-        String sql = "SELECT * FROM pengaduan WHERE (nama LIKE ? OR kategori LIKE ? OR isi_laporan LIKE ?) ORDER BY tgl_pengaduan ASC";
+        String sql = "SELECT * FROM pengaduan "
+           + "WHERE status IN ('terverifikasi','tertanggapi') "
+           + "AND (nama LIKE ? OR kategori LIKE ? OR isi_laporan LIKE ?) "
+           + "ORDER BY tgl_pengaduan ASC";
 
         java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
         java.sql.PreparedStatement pst = conn.prepareStatement(sql);
@@ -602,9 +553,7 @@ try {
     private javax.swing.JComboBox<String> cb_kategori;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_total;

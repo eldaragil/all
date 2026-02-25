@@ -52,11 +52,6 @@ public class Aspirasi1 extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         txt_nik = new javax.swing.JTextField();
         txt_nama = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -67,57 +62,60 @@ public class Aspirasi1 extends javax.swing.JFrame {
         txt_cari = new javax.swing.JTextField();
         cb_filter = new javax.swing.JComboBox<>();
         txt_id = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         btn_refresh = new javax.swing.JButton();
         txt_tanggal = new com.toedter.calendar.JDateChooser();
-        jLabel7 = new javax.swing.JLabel();
         btn_simpan = new javax.swing.JButton();
         btn_hapus = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
         cb_kategori = new javax.swing.JComboBox<>();
         cb_statusfil = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("ASPIRASI ADMIN");
-
-        jLabel2.setText("NIK / NISN");
-
-        jLabel3.setText("Nama");
-
-        jLabel4.setText("Isi Aspirasi");
-
-        jLabel5.setText("Status");
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txt_nik.setEditable(false);
-        txt_nik.setBackground(new java.awt.Color(153, 153, 153));
+        txt_nik.setBackground(new java.awt.Color(0,0,0,0));
+        txt_nik.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_nik.setBorder(null);
         txt_nik.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_nikActionPerformed(evt);
             }
         });
+        jPanel1.add(txt_nik, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 370, 380, 50));
 
         txt_nama.setEditable(false);
-        txt_nama.setBackground(new java.awt.Color(153, 153, 153));
+        txt_nama.setBackground(new java.awt.Color(0,0,0,0));
+        txt_nama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_nama.setBorder(null);
         txt_nama.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_namaActionPerformed(evt);
             }
         });
+        jPanel1.add(txt_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 440, 380, 50));
 
         txt_isi.setEditable(false);
-        txt_isi.setBackground(new java.awt.Color(153, 153, 153));
+        txt_isi.setBackground(new java.awt.Color(0,0,0,0));
         txt_isi.setColumns(20);
+        txt_isi.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         txt_isi.setRows(5);
+        txt_isi.setBorder(null);
         jScrollPane1.setViewportView(txt_isi);
 
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 660, 390, 100));
+
+        cb_status.setBackground(new java.awt.Color(0,0,0,0));
+        cb_status.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terimakasih", "diterapkan", " " }));
+        cb_status.setBorder(null);
         cb_status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_statusActionPerformed(evt);
             }
         });
+        jPanel1.add(cb_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 790, 380, 50));
 
         tbAspirasi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -137,6 +135,11 @@ public class Aspirasi1 extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tbAspirasi);
 
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 320, 1000, 650));
+
+        txt_cari.setBackground(new java.awt.Color(0,0,0,0));
+        txt_cari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_cari.setBorder(null);
         txt_cari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_cariActionPerformed(evt);
@@ -147,173 +150,86 @@ public class Aspirasi1 extends javax.swing.JFrame {
                 txt_cariKeyReleased(evt);
             }
         });
+        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 220, 710, 50));
 
+        cb_filter.setBackground(new java.awt.Color(0,0,0,0));
+        cb_filter.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_filter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NIK", "NISN", "Nama", "Kategori" }));
+        cb_filter.setBorder(null);
         cb_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_filterActionPerformed(evt);
             }
         });
+        jPanel1.add(cb_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1560, 220, 100, 50));
 
         txt_id.setEditable(false);
-        txt_id.setBackground(new java.awt.Color(153, 153, 153));
+        txt_id.setBackground(new java.awt.Color(0,0,0,0));
+        txt_id.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_id.setBorder(null);
+        jPanel1.add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 380, 50));
 
-        jLabel6.setText("ID");
-
-        btn_refresh.setText("Segarkan");
+        btn_refresh.setBackground(new java.awt.Color(0,0,0,0));
+        btn_refresh.setBorder(null);
         btn_refresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_refreshActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 870, 70, 40));
 
         txt_tanggal.setBackground(new java.awt.Color(153, 153, 153));
+        txt_tanggal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel1.add(txt_tanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 510, 410, 50));
 
-        jLabel7.setText("Tgl Aspirasi");
-
-        btn_simpan.setText("Simpan");
+        btn_simpan.setBorder(null);
         btn_simpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_simpanActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 870, 80, 40));
 
-        btn_hapus.setText("Keluar");
+        btn_hapus.setBackground(new java.awt.Color(0,0,0,0));
+        btn_hapus.setBorder(null);
         btn_hapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_hapusActionPerformed(evt);
             }
         });
+        jPanel1.add(btn_hapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 870, 80, 40));
 
-        jLabel8.setText("Kategori");
-
+        cb_kategori.setBackground(new java.awt.Color(0,0,0,0));
+        cb_kategori.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_kategori.setForeground(new java.awt.Color(102, 102, 102));
         cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hardware PC Lab", "Software & Library", "Jaringan & Internet", "Sarana Ruang Praktik", "Kelistrikan & Kabel" }));
+        cb_kategori.setBorder(null);
+        jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 590, 380, 40));
 
+        cb_statusfil.setBackground(new java.awt.Color(0,0,0,0));
+        cb_statusfil.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_statusfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terimakasih", "diterapkan" }));
+        cb_statusfil.setBorder(null);
         cb_statusfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_statusfilActionPerformed(evt);
             }
         });
+        jPanel1.add(cb_statusfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(1700, 220, 140, 50));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(127, 127, 127)
-                        .addComponent(txt_cari)
-                        .addGap(18, 18, 18)
-                        .addComponent(cb_filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cb_statusfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_refresh))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel8))
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txt_id)
-                                    .addComponent(txt_nik)
-                                    .addComponent(txt_nama)
-                                    .addComponent(txt_tanggal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cb_kategori, 0, 239, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btn_simpan)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btn_hapus))
-                                    .addComponent(cb_status, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(51, 51, 51)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(129, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_cari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_refresh)
-                            .addComponent(cb_statusfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel6)
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txt_nik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(16, 16, 16)
-                                .addComponent(txt_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(9, 9, 9)
-                                .addComponent(txt_tanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cb_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cb_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btn_hapus)
-                            .addComponent(btn_simpan))))
-                .addContainerGap(41, Short.MAX_VALUE))
-        );
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/aspirasi tan.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-5, -4, 1920, 1090));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -449,7 +365,7 @@ public class Aspirasi1 extends javax.swing.JFrame {
 
     try {
         java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
-        String sql = "SELECT * FROM aspirasi ORDER BY id_aspirasi DESC";
+        String sql = "SELECT * FROM aspirasi WHERE status='menunggu' ORDER BY id_aspirasi DESC";
         java.sql.ResultSet res = conn.createStatement().executeQuery(sql);
         
         while(res.next()){
@@ -531,13 +447,6 @@ public class Aspirasi1 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_status;
     private javax.swing.JComboBox<String> cb_statusfil;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -555,31 +464,26 @@ public class Aspirasi1 extends javax.swing.JFrame {
     model.addColumn("NIK / NISN");
     model.addColumn("Nama");           
     model.addColumn("Isi Aspirasi");   
-    model.addColumn("Kategori"); // <--- Tambah Kolom Baru
+    model.addColumn("Kategori");
     model.addColumn("Tanggal"); 
     model.addColumn("Status");         
-    
 
     try {
         java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
-        String sql = "SELECT * FROM aspirasi ORDER BY tanggal ASC";
+        String sql = "SELECT * FROM aspirasi WHERE status='menunggu' ORDER BY tanggal ASC";
         java.sql.ResultSet res = conn.createStatement().executeQuery(sql);
         
         while(res.next()){
-            String nik = res.getString("nik");
-           /// String nisn = res.getString("nisn");
             String identitasTampil = res.getString("nik");
-
 
             model.addRow(new Object[]{
                 res.getString("id_aspirasi"),
                 identitasTampil,
                 res.getString("nama"), 
                 res.getString("isi_aspirasi"),
-                res.getString("kategori"), // <--- Ambil data kategori
+                res.getString("kategori"),
                 res.getString("tanggal"),
                 res.getString("status")
-                 
             });
         }
         tbAspirasi.setModel(model);
@@ -618,7 +522,7 @@ public class Aspirasi1 extends javax.swing.JFrame {
             sql = "SELECT * FROM aspirasi WHERE kategori LIKE ?";
         } else {
             // Pencarian Umum (Semua kolom dicari dari depan)
-            sql = "SELECT * FROM aspirasi WHERE nama LIKE ? OR nik LIKE ? OR kategori LIKE ?";
+            sql = "String sql = \"SELECT * FROM aspirasi WHERE status='menunggu' AND nama LIKE ?\"; ?";
         }
         
         java.sql.PreparedStatement pst = conn.prepareStatement(sql);

@@ -49,6 +49,9 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     
     public Aspirasi_peng() {
         initComponents();
+        txt_nik.setText(session.getNik());
+        txt_nik.setEditable(false);
+
         //setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         conn = Koneksi.Koneksi.KoneksiDB(); //javaConnect = nama file || Connection = nama method
   
@@ -70,6 +73,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         
         tampilkan_data();//memanggil method getdata
        }
+    
  //menampilkan data dr tabel ke masing-masing komponen cara 2
    void pilihData() {
        int i = tbAspirasi.getSelectedRow();
@@ -100,6 +104,47 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, e);
     }
 }
+      
+        private void hapusAspirasi() {
+
+    // Cek apakah ada data dipilih
+    if (txt_id.getText().equals("")) {
+        JOptionPane.showMessageDialog(this, "Pilih data aspirasi terlebih dahulu!");
+        return;
+    }
+
+    int konfirmasi = JOptionPane.showConfirmDialog(
+            this,
+            "Yakin ingin menghapus data ini?",
+            "Konfirmasi Hapus",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (konfirmasi == JOptionPane.YES_OPTION) {
+        try {
+
+            // Hanya boleh hapus jika id DAN nik sesuai login
+            String sql = "DELETE FROM aspirasi WHERE id_aspirasi = ? AND nik = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            pst.setString(1, txt_id.getText());
+            pst.setString(2, session.getNik()); // NIK user login
+
+            int hasil = pst.executeUpdate();
+
+            if (hasil > 0) {
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus!");
+                tampilkan_data();
+                bersih();
+            } else {
+                JOptionPane.showMessageDialog(this, "Anda tidak berhak menghapus data ini!");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal menghapus: " + e.getMessage());
+        }
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -111,10 +156,6 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         txt_nik = new javax.swing.JTextField();
         txt_nama = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -124,57 +165,49 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         txt_cari = new javax.swing.JTextField();
         cb_filter = new javax.swing.JComboBox<>();
         txt_id = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         btn_refresh = new javax.swing.JButton();
         txt_tanggal = new com.toedter.calendar.JDateChooser();
-        jLabel7 = new javax.swing.JLabel();
         btn_simpan = new javax.swing.JButton();
         btn_hapus = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
         cb_kategori = new javax.swing.JComboBox<>();
         cb_statusfil = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("ASPIRASI PENGADUAN");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 16, -1, -1));
-
-        jLabel2.setText("NIK / NISN");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 120, -1, -1));
-
-        jLabel3.setText("Nama");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 152, -1, -1));
-
-        jLabel4.setText("Isi Aspirasi");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 241, -1, -1));
-
+        txt_nik.setBackground(new java.awt.Color(0,0,0,0));
+        txt_nik.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_nik.setBorder(null);
         txt_nik.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_nikActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_nik, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 117, 239, -1));
+        jPanel1.add(txt_nik, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 330, 400, 50));
 
         txt_nama.setEditable(false);
-        txt_nama.setBackground(new java.awt.Color(255, 255, 255));
+        txt_nama.setBackground(new java.awt.Color(0,0,0,0));
+        txt_nama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_nama.setBorder(null);
         txt_nama.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_namaActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 150, 230, -1));
+        jPanel1.add(txt_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, 400, 50));
 
+        txt_isi.setBackground(new java.awt.Color(0,0,0,0));
         txt_isi.setColumns(20);
         txt_isi.setRows(5);
+        txt_isi.setBorder(null);
         jScrollPane1.setViewportView(txt_isi);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 246, 239, 115));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 610, 400, 150));
 
         tbAspirasi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -194,8 +227,11 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tbAspirasi);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 76, 643, 229));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 1000, 660));
 
+        txt_cari.setBackground(new java.awt.Color(0,0,0,0));
+        txt_cari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_cari.setBorder(null);
         txt_cari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_cariActionPerformed(evt);
@@ -206,69 +242,81 @@ public class Aspirasi_peng extends javax.swing.JFrame {
                 txt_cariKeyReleased(evt);
             }
         });
-        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 33, 376, -1));
+        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 180, 720, 40));
 
+        cb_filter.setBackground(new java.awt.Color(0,0,0,0));
+        cb_filter.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_filter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NIK", "NISN", "Nama", "Kategori" }));
+        cb_filter.setBorder(null);
         cb_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_filterActionPerformed(evt);
             }
         });
-        jPanel1.add(cb_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 33, -1, -1));
+        jPanel1.add(cb_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1560, 180, 110, 40));
 
         txt_id.setEditable(false);
-        txt_id.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel1.add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 79, 239, -1));
+        txt_id.setBackground(new java.awt.Color(0,0,0,0));
+        txt_id.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_id.setBorder(null);
+        jPanel1.add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 250, 410, 50));
 
-        jLabel6.setText("ID");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 82, -1, -1));
-
-        btn_refresh.setText("Segarkan");
+        btn_refresh.setBackground(new java.awt.Color(0,0,0,0));
+        btn_refresh.setBorder(null);
         btn_refresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_refreshActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 410, -1, -1));
+        jPanel1.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 790, 70, 40));
 
-        txt_tanggal.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel1.add(txt_tanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 182, 239, -1));
+        txt_tanggal.setBackground(new java.awt.Color(0,0,0,0));
+        jPanel1.add(txt_tanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 470, 400, 40));
 
-        jLabel7.setText("Tgl Aspirasi");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, -1));
-
-        btn_simpan.setText("update");
+        btn_simpan.setBackground(new java.awt.Color(0,0,0,0));
+        btn_simpan.setBorder(null);
         btn_simpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_simpanActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 410, -1, -1));
+        jPanel1.add(btn_simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 790, 80, 40));
 
-        btn_hapus.setText("Keluar");
+        btn_hapus.setBackground(new java.awt.Color(0,0,0,0));
+        btn_hapus.setBorder(null);
         btn_hapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_hapusActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_hapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 410, -1, -1));
+        jPanel1.add(btn_hapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 790, 80, 40));
 
-        jLabel8.setText("Kategori");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 209, -1, -1));
-
+        cb_kategori.setBackground(new java.awt.Color(0,0,0,0));
+        cb_kategori.setEditable(true);
+        cb_kategori.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_kategori.setForeground(new java.awt.Color(102, 102, 102));
         cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hardware PC Lab", "Software & Library", "Jaringan & Internet", "Sarana Ruang Praktik", "Kelistrikan & Kabel" }));
-        jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(96, 208, 239, -1));
+        cb_kategori.setBorder(null);
+        cb_kategori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_kategoriActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 540, 400, 50));
 
+        cb_statusfil.setBackground(new java.awt.Color(0,0,0,0));
+        cb_statusfil.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cb_statusfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terimakasih", "diterapkan" }));
+        cb_statusfil.setBorder(null);
         cb_statusfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_statusfilActionPerformed(evt);
             }
         });
-        jPanel1.add(cb_statusfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(893, 33, -1, -1));
+        jPanel1.add(cb_statusfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(1700, 180, 150, 40));
 
-        jButton1.setText("cek");
+        jButton1.setBackground(new java.awt.Color(0,0,0,0));
+        jButton1.setBorder(null);
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
@@ -279,28 +327,38 @@ public class Aspirasi_peng extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(348, 116, 46, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 320, 110, 60));
 
-        jButton2.setText("simpan");
+        jButton2.setBackground(new java.awt.Color(0,0,0,0));
+        jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 410, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 790, 80, 40));
 
-        jButton3.setText("delete");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, -1, -1));
+        jButton3.setBackground(new java.awt.Color(0,0,0,0));
+        jButton3.setBorder(null);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 790, 90, 40));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/pelapor aspirasi.png"))); // NOI18N
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1103, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -312,24 +370,34 @@ public class Aspirasi_peng extends javax.swing.JFrame {
 
     private void btn_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_simpanActionPerformed
         // TODO add your handling code here:                                                                             
-            String tampilan="yyyy-MM-dd";
-        SimpleDateFormat fm = new SimpleDateFormat(tampilan);
-        String tanggal=String.valueOf(fm.format(txt_tanggal.getDate()));
-        try {
-            //String id_pengaduan = txt_pengaduan.getText();
-            String nik = txt_nik.getText();
-           // String tgl = tanggal;
-            String isi = txt_isi.getText();
+           String tampilan = "yyyy-MM-dd";
+    SimpleDateFormat fm = new SimpleDateFormat(tampilan);
+    String tanggal = String.valueOf(fm.format(txt_tanggal.getDate()));
 
-            String sql = "UPDATE pengaduan set nik='" + nik + "', isi_laporan='" + isi + "'";
-            pst = conn.prepareStatement(sql);
-            pst.execute();
-            JOptionPane.showMessageDialog(null, "UPDATE SUKSES");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+    try {
+        String sql = "UPDATE aspirasi SET isi_aspirasi = ?, kategori = ? WHERE id_aspirasi = ? AND nik = ?";
+        pst = conn.prepareStatement(sql);
+
+        pst.setString(1, txt_isi.getText());
+        pst.setString(2, cb_kategori.getSelectedItem().toString());
+        pst.setString(3, txt_id.getText());
+        pst.setString(4, session.getNik());
+
+        int hasil = pst.executeUpdate();
+
+        if (hasil > 0) {
+            JOptionPane.showMessageDialog(null, "Update berhasil!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Data tidak ditemukan / bukan milik anda!");
         }
-        tampilkan_data();
-        bersih();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+
+    tampilkan_data();
+    bersih();
+
     }//GEN-LAST:event_btn_simpanActionPerformed
 
     private void btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hapusActionPerformed
@@ -356,7 +424,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         cb_kategori.setSelectedItem(tbAspirasi.getValueAt(i, 4).toString());
         
         // KUNCI DISINI: Agar admin tidak bisa mengubah
-        cb_kategori.setEnabled(false); 
+      //  cb_kategori.setEnabled(false); 
         
 //        cb_status.setSelectedItem(tbAspirasi.getValueAt(i, 5).toString());
         
@@ -397,11 +465,11 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     // 2. Pengaturan Kunci
     txt_nik.setEditable(false); // Admin biasanya tidak boleh edit identitas
     txt_nama.setEditable(false);
-    txt_isi.setEditable(false);
-    txt_tanggal.setEnabled(false);
+    txt_isi.setEditable(true);
+    txt_tanggal.setEnabled(true);
     
     // Kategori tetap dikunci (false)
-    cb_kategori.setEnabled(false); 
+    cb_kategori.setEnabled(true); 
 
     // 3. Update Tabel (Pastikan kolom kategori ada)
     DefaultTableModel model = new DefaultTableModel();
@@ -439,7 +507,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
 } catch (Exception e) {
     JOptionPane.showMessageDialog(this, "Gagal Refresh: " + e.getMessage());
 }
-
+tampilidaspirasi();
 
     }//GEN-LAST:event_btn_refreshActionPerformed
 
@@ -502,6 +570,15 @@ public class Aspirasi_peng extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void cb_kategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_kategoriActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cb_kategoriActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        hapusAspirasi();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -548,13 +625,7 @@ public class Aspirasi_peng extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

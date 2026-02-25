@@ -87,15 +87,13 @@ public class verivikasiwaka extends javax.swing.JFrame {
     void getData() {
     model.getDataVector().removeAllElements();
     model.fireTableDataChanged();
-       
-    
+
     try {
-        //membuat statement pemanggilan data pada table surat_masuk dari database 
-        String sql = "select * from pengaduan";
+        String sql = "SELECT * FROM pengaduan WHERE status = ?";
         pst = conn.prepareStatement(sql);
+        pst.setString(1, "menunggu"); // hanya tampil yang menunggu
         rs = pst.executeQuery();
-        
-        //penelusuran baris pada table surat_masuk dari database
+
         while (rs.next()) {
             Object[] obj = new Object[7];
             obj[0] = rs.getString("id_pengaduan");
@@ -105,15 +103,14 @@ public class verivikasiwaka extends javax.swing.JFrame {
             obj[4] = rs.getString("isi_laporan");
             obj[5] = rs.getString("foto");
             obj[6] = rs.getString("status");
-            
- 
-            
+
             model.addRow(obj);
         }
+
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);      
+        JOptionPane.showMessageDialog(null, e);
     }
-} 
+}
  //menampilkan data dr tabel ke masing-masing komponen cara 2
    void pilihData() {
        int i = jTable1.getSelectedRow();
@@ -167,60 +164,62 @@ public class verivikasiwaka extends javax.swing.JFrame {
         cmb_status = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pengaduan Masyarakat");
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jd_tglpengaduan, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 210, 30));
 
-        txt_isi.setBackground(new java.awt.Color(204, 204, 204));
+        jd_tglpengaduan.setBackground(new java.awt.Color(0,0,0,0));
+        jd_tglpengaduan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel1.add(jd_tglpengaduan, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 370, 400, 50));
+
+        txt_isi.setBackground(new java.awt.Color(0,0,0,0));
         txt_isi.setColumns(20);
+        txt_isi.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         txt_isi.setRows(5);
         txt_isi.setBorder(null);
-        jPanel1.add(txt_isi, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 210, -1));
+        jPanel1.add(txt_isi, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 440, 400, 130));
 
-        jButton3.setText("update");
+        jButton3.setBackground(new java.awt.Color(0,0,0,0));
         jButton3.setBorder(null);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 430, 50, 20));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 890, 80, 40));
 
-        jButton7.setText("exit");
+        jButton7.setBackground(new java.awt.Color(0,0,0,0));
         jButton7.setBorder(null);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 430, 50, 20));
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 890, 80, 40));
 
-        jButton6.setText("cari");
+        jButton6.setBackground(new java.awt.Color(0,0,0,0));
         jButton6.setBorder(null);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 60, 20));
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1710, 220, 150, 50));
 
-        jButton2.setText("save");
+        jButton2.setBackground(new java.awt.Color(0,0,0,0));
         jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 430, 50, 20));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 890, 80, 40));
 
+        cmb_cari.setBackground(new java.awt.Color(0,0,0,0));
+        cmb_cari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cmb_cari.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NAMA" }));
         cmb_cari.setBorder(null);
         cmb_cari.addActionListener(new java.awt.event.ActionListener() {
@@ -228,31 +227,37 @@ public class verivikasiwaka extends javax.swing.JFrame {
                 cmb_cariActionPerformed(evt);
             }
         });
-        jPanel1.add(cmb_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, 90, -1));
+        jPanel1.add(cmb_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(1570, 220, 110, 50));
 
+        txt_cari.setBackground(new java.awt.Color(0,0,0,0));
+        txt_cari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txt_cari.setBorder(null);
-        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 50, 150, 20));
+        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 220, 710, 50));
 
-        lbl_foto.setBackground(new java.awt.Color(255, 255, 255));
-        lbl_foto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(lbl_foto, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 280, 100, 130));
+        lbl_foto.setBackground(new java.awt.Color(0,0,0,0));
+        jPanel1.add(lbl_foto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 670, 150, 190));
 
         id.setEditable(false);
-        id.setBackground(new java.awt.Color(204, 204, 204));
+        id.setBackground(new java.awt.Color(0,0,0,0));
+        id.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        id.setBorder(null);
         id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idActionPerformed(evt);
             }
         });
-        jPanel1.add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 210, 30));
+        jPanel1.add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 400, 50));
 
+        cmb_status.setBackground(new java.awt.Color(0,0,0,0));
+        cmb_status.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         cmb_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "menunggu", "terverifikasi" }));
+        cmb_status.setBorder(null);
         cmb_status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_statusActionPerformed(evt);
             }
         });
-        jPanel1.add(cmb_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 240, 210, 30));
+        jPanel1.add(cmb_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 590, 400, 50));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -272,36 +277,20 @@ public class verivikasiwaka extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, 480, 170));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 320, 1010, 650));
 
-        jLabel1.setText("id");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 50, -1));
-
-        jLabel2.setText("tanggal");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
-
-        jLabel3.setText("isi_pengaduan");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
-
-        jLabel4.setText("status");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
-
-        jLabel5.setText("foto");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/VERIFIKASI WAKA (1).png"))); // NOI18N
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -481,11 +470,7 @@ public class verivikasiwaka extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

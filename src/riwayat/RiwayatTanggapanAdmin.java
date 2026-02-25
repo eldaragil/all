@@ -19,10 +19,19 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
 import Koneksi.Koneksi;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Statement;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
     private final DefaultTableModel model;
@@ -75,7 +84,6 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -85,16 +93,15 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 700));
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("RIWAYAT PENGADUAN");
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 270, 40));
+        jPanel1.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 190, 260, 40));
 
         tabel_pengaduan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -114,118 +121,67 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabel_pengaduan);
 
-        jButton3.setText("Detail");
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 320, 1580, 570));
+
+        jButton3.setBackground(new java.awt.Color(0,0,0,0));
+        jButton3.setBorder(null);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 950, 120, 40));
 
-        jButton4.setText("Cetak Filter");
+        jButton4.setBackground(new java.awt.Color(0,0,0,0));
+        jButton4.setBorder(null);
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 950, 120, 40));
 
-        jButton5.setText("Cetak Semua");
+        jButton5.setBackground(new java.awt.Color(0,0,0,0));
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 950, 120, 40));
 
-        jButton6.setText("Refresh");
+        jButton6.setBackground(new java.awt.Color(0,0,0,0));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 950, 120, 40));
 
-        jButton7.setText("Exit");
+        jButton7.setBackground(new java.awt.Color(0,0,0,0));
+        jButton7.setBorder(null);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 950, 110, 40));
 
-        jLabel2.setText("Filter Tanggal");
-
-        jLabel3.setText("Sampai");
-
-        jButton2.setText("cari");
+        jButton2.setBackground(new java.awt.Color(0,0,0,0));
+        jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 190, 150, 40));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addGap(12, 12, 12)
-                            .addComponent(jButton4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton7))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(18, 18, 18)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jLabel3)
-                            .addGap(18, 18, 18)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton2)
-                            .addGap(2529, 2529, 2529)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(2246, 2246, 2246))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton3)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
-                .addContainerGap(51, Short.MAX_VALUE))
-        );
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/riwayat tanggapan (1).png"))); // NOI18N
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1920, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1080, Short.MAX_VALUE)
         );
 
         pack();
@@ -292,7 +248,7 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-                                            
+        
   
     jDateChooser1.setDate(null);
     jDateChooser2.setDate(null);
@@ -315,7 +271,7 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
         try {
             // Panggil Menu Admin (Pastikan nama class-nya benar)
             // Jika MenuAdmin ada di package lain, NetBeans akan minta Import otomatis
-            new ukk.menu.menuPelapor().setVisible(true); 
+            new ukk.menu.menuAdmin().setVisible(true); 
             
             // Tutup form riwayat yang sekarang
             this.dispose(); 
@@ -368,14 +324,69 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_tabel_pengaduanMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-                                                                                         
+        String sql = "SELECT " +
+            "pengaduan.id_pengaduan AS pengaduan_id_pengaduan, " +
+            "pengaduan.nik AS pengaduan_nik, " +
+            "pengaduan.tgl_pengaduan AS pengaduan_tgl_pengaduan, " +
+            "pengaduan.isi_laporan AS pengaduan_isi_laporan, " +
+            "pengaduan.nama AS pengaduan_nama, " +
+            "pengaduan.foto AS pengaduan_foto, " +
+            "pengaduan.lokasi AS pengaduan_lokasi, " +
+            "pengaduan.Kategori AS pengaduan_Kategori, " +
+            "pengaduan.status AS pengaduan_status, " +
+            "tanggapan.id_tanggapan AS tanggapan_id_tanggapan, " +
+            "tanggapan.nik AS tanggapan_nik, " +
+            "tanggapan.nama AS tanggapan_nama, " +
+            "tanggapan.isi_pengaduan AS tanggapan_isi_pengaduan, " +
+            "tanggapan.feedback AS tanggapan_feedback, " +
+            "tanggapan.status AS tanggapan_status, " +
+            "tanggapan.tanggal AS tanggapan_tanggal, " +
+            "tanggapan.foto AS tanggapan_foto, " +
+            "tanggapan.id_pengaduan AS tanggapan_id_pengaduan, " +
+            "tanggapan.tgl_tang AS tanggapan_tgl_tang, " +
+            "tanggapan.kategori AS tanggapan_kategori, " +
+            "tanggapan.lokasi AS tanggapan_lokasi, " +
+            "tanggapan.id_petugas AS tanggapan_id_petugas " +
+            "FROM pengaduan " +
+            "LEFT JOIN tanggapan ON pengaduan.id_pengaduan = tanggapan.id_pengaduan " +
+            "ORDER BY pengaduan.tgl_pengaduan DESC";
+
+    try {
+
+        Connection conn = Koneksi.KoneksiDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rp = pst.executeQuery();
+
+        JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(
+                "D:/buiza/ukk/src/report/LAPENGALL.jrxml"
+        );
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
+
+        JRViewer viewer = new JRViewer(jasperPrint);
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Laporan Data Pengaduan & Tanggapan");
+        dialog.setAlwaysOnTop(true);
+        dialog.getContentPane().add(viewer);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dialog.setBounds(0, 0, screenSize.width, screenSize.height);
+        dialog.setVisible(true);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal Cetak Laporan: " + e.getMessage());
+        e.printStackTrace();
+    }
+
    
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                                        
+        
     System.out.println("Tombol diklik!"); // Ini untuk ngetes di panel Output bawah
     
     if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null) {
@@ -432,9 +443,7 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabel_pengaduan;
@@ -490,7 +499,7 @@ private void cariData() {
         String tglSampai = df.format(jDateChooser2.getDate());
 
         Connection conn = Koneksi.KoneksiDB();
-        String sql = "SELECT * FROM pengaduan WHERE DATE(tgl_pengaduan) BETWEEN ? AND ?";
+        String sql = "SELECT * FROM tanggapan WHERE DATE(tgl_pengaduan) BETWEEN ? AND ?";
         
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setString(1, tglDari);
@@ -501,13 +510,18 @@ private void cariData() {
         while (rs.next()) {
             dataDitemukan = true;
             Object[] obj = {
+                rs.getString("id_tanggapan"),
                 rs.getString("id_pengaduan"),
                 rs.getString("nik"),
                 rs.getString("nama"),
-                rs.getString("tgl_pengaduan"),
+                rs.getString("tanggal"),      // Tanggal Pengaduan
+                rs.getString("tgl_tang"),     // Tanggal Tanggapan
+                rs.getString("id_petugas"),   // Kalau belum ada nama petugas
+                rs.getString("isi_pengaduan"),
                 rs.getString("kategori"),
-                rs.getString("isi_laporan"),
+                rs.getString("lokasi"),
                 rs.getString("status"),
+                rs.getString("feedback"),
                 rs.getString("foto")
             };
             model.addRow(obj);

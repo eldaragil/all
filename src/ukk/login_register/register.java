@@ -129,7 +129,7 @@ public class register extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
        try{
-           String sql = "insert into user (nik,nama,password,role)values(?,?,?,?)";
+           String sql = "insert into pelapor (nik,nama,password,role)values(?,?,?,?)";
            pst = conn.prepareStatement(sql);
            pst.setString(1, txt_nik.getText());
            pst.setString(2, txt_nama.getText());
