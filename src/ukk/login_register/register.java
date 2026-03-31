@@ -115,7 +115,7 @@ public class register extends javax.swing.JFrame {
         jPanel1.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 730, 610, 80));
 
         jLabel8.setBackground(new java.awt.Color(0,0,0,0));
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar_new/regisster (1).png"))); // NOI18N
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar_new/regisster.png"))); // NOI18N
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1090));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

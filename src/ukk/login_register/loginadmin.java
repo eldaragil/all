@@ -47,7 +47,6 @@ Connection conn = null;
         jPanel1 = new javax.swing.JPanel();
         usernameTxt = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         passwordTxt = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
@@ -73,18 +72,7 @@ Connection conn = null;
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 720, 370, 60));
-
-        jButton2.setBackground(new java.awt.Color(0,0,0,0));
-        jButton2.setBorder(null);
-        jButton2.setBorderPainted(false);
-        jButton2.setContentAreaFilled(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1410, 720, 330, 60));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 720, 730, 60));
 
         jButton3.setBackground(new java.awt.Color(0,0,0,0));
         jButton3.setBorder(null);
@@ -100,7 +88,7 @@ Connection conn = null;
         passwordTxt.setBorder(null);
         jPanel1.add(passwordTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 610, 680, 80));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar_new/Login.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar_new/Login (2).png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -166,14 +154,6 @@ if (usernameTxt.getText().isEmpty() || passwordTxt.getText().isEmpty()) {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    // TODO add your handling code here:
-                        registrasiWaka register = new registrasiWaka();
-                        register.setVisible(true);
-                        this.setVisible(false);
-                        this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ukk.login_register.menulogin menu = new ukk.login_register.menulogin();
     
@@ -225,7 +205,6 @@ if (usernameTxt.getText().isEmpty() || passwordTxt.getText().isEmpty()) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
