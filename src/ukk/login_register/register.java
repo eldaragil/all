@@ -41,6 +41,16 @@ public class register extends javax.swing.JFrame {
         conn = Koneksi.Koneksi.KoneksiDB(); //javaConnect = nama file || Connection = nama method
         this.setLocationRelativeTo(null);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
+        txt_nik.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            char c = evt.getKeyChar();
+
+            if (!Character.isDigit(c)) {
+                evt.consume(); // blok selain angka
+            }
+        }
+    });
     }
  
    void bersih() {
@@ -133,7 +143,42 @@ public class register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       try{
+        String nik = txt_nik.getText();
+        String nama = txt_nama.getText();
+        String password = txt_password.getText();
+
+        //  VALIDASI KOSONG
+        if (nik.isEmpty() || nama.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Semua field wajib diisi!");
+            return;
+        }
+
+        //  VALIDASI NIK 
+        if (!nik.matches("\\d{8,}")) {
+            JOptionPane.showMessageDialog(null, "NIK harus angka dan minimal 8 digit!");
+            return;
+        }
+
+        //  VALIDASI PASSWORD 
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Password minimal 8 karakter!");
+            return;
+        }
+
+        
+        try{
+            
+            // 🔥 CEK DUPLIKAT
+        String cek = "SELECT nik FROM pelapor WHERE nik=?";
+        PreparedStatement pstCek = conn.prepareStatement(cek);
+        pstCek.setString(1, nik);
+        ResultSet rsCek = pstCek.executeQuery();
+
+        if (rsCek.next()) {
+            JOptionPane.showMessageDialog(null, "NIK sudah terdaftar!");
+            return;
+        }
+        
            String sql = "insert into pelapor (nik,nama,password,role)values(?,?,?,?)";
            pst = conn.prepareStatement(sql);
            pst.setString(1, txt_nik.getText());

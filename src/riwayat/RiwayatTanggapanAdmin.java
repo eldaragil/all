@@ -61,7 +61,7 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
 
         tabel_pengaduan.setModel(model);
 
-        tampilData(); 
+        load_riwayat(); 
 
         }
     
@@ -99,6 +99,9 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        txt_cari = new javax.swing.JTextField();
+        cb_kategori = new javax.swing.JComboBox<>();
+        cmb_kategori = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -180,6 +183,24 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 190, 150, 40));
 
+        txt_cari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_cariKeyReleased(evt);
+            }
+        });
+        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, 740, 40));
+
+        cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NIK/NISN", "Nama" }));
+        jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 130, 120, 40));
+
+        cmb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "semua", "sarana", "prasarana" }));
+        cmb_kategori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_kategoriActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 130, 110, 40));
+
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/riwayat tanggapan (1).png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
@@ -260,9 +281,12 @@ public class RiwayatTanggapanAdmin extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         
   
-    jDateChooser1.setDate(null);
-    jDateChooser2.setDate(null);
-    tampilData(); // Memanggil fungsi tampil data awal
+    txt_cari.setText("");        // Mengosongkan kolom cari
+    jDateChooser1.setDate(null);           // Mengosongkan filter tanggal awal
+    jDateChooser2.setDate(null);         // Mengosongkan filter tanggal akhir
+    cb_kategori.setSelectedIndex(0);  // Mengembalikan combobox ke pilihan pertama
+    cmb_kategori.setSelectedIndex(0);
+    load_riwayat(); // Memanggil fungsi tampil data awal
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -461,90 +485,235 @@ try {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
                                            
-    try {
+   try {
 
-        // 1️⃣ Cek tanggal
-        if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null) {
-            JOptionPane.showMessageDialog(null, "Pilih tanggal terlebih dahulu!");
-            return;
-        }
+    String cari = txt_cari.getText().trim();
+    String kategori = cmb_kategori.getSelectedItem().toString();
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String dari = df.format(jDateChooser1.getDate());
-        String sampai = df.format(jDateChooser2.getDate());
+    boolean adaTanggal = (jDateChooser1.getDate() != null && jDateChooser2.getDate() != null);
+    boolean adaCari = !cari.isEmpty();
+    boolean adaKategori = !kategori.equalsIgnoreCase("semua");
 
-        Connection conn = Koneksi.KoneksiDB();
-
-        // 2️⃣ QUERY FINAL
-        String sql = "SELECT " +
-             "p.id_pengaduan AS pengaduan_id_pengaduan, " +
-             "p.nik AS pengaduan_nik, " +
-             "p.tgl_pengaduan AS pengaduan_tgl_pengaduan, " +
-             "p.isi_laporan AS pengaduan_isi_laporan, " +
-             "p.nama AS pengaduan_nama, " +
-             "p.foto AS pengaduan_foto, " +
-             "p.lokasi AS pengaduan_lokasi, " +
-             "p.Kategori AS pengaduan_Kategori, " +
-             "p.status AS pengaduan_status, " +
-
-             "t.id_tanggapan AS tanggapan_id_tanggapan, " +
-             " t.id_pengaduan AS tanggapan_id_pengaduan," +
-             "t.nik AS tanggapan_nik, " +
-             "t.nama AS tanggapan_nama, " +
-             "t.isi_pengaduan AS tanggapan_isi_pengaduan, " +
-             "t.feedback AS tanggapan_feedback, " +
-             "t.status AS tanggapan_status, " +
-             "t.tgl_tang AS tanggapan_tanggal, " +
-             "t.tgl_tang AS tanggapan_tgl_tang, " +   // 🔥 INI YANG PENTING
-             "t.foto AS tanggapan_foto, " +
-             "t.kategori AS tanggapan_kategori, " +
-             "t.lokasi AS tanggapan_lokasi, " +
-             "t.id_petugas AS tanggapan_id_petugas " +
-
-             "FROM tanggapan t " +
-             "INNER JOIN pengaduan p ON t.id_pengaduan = p.id_pengaduan " +
-             "WHERE t.status = 'tertanggapi' " +
-             "AND DATE(t.tgl_tang) BETWEEN ? AND ? " +
-             "ORDER BY t.tgl_tang DESC";
-
-        PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, dari);
-        pst.setString(2, sampai);
-
-        ResultSet rs = pst.executeQuery();
-
-        if (!rs.isBeforeFirst()) {
-            JOptionPane.showMessageDialog(null, "Data tidak ditemukan!");
-            return;
-        }
-
-        JRResultSetDataSource dataSource = new JRResultSetDataSource(rs);
-
-        // 3️⃣ LOAD & COMPILE JRXML (ANTI NULL ERROR)
-        InputStream reportStream = getClass()
-                .getClassLoader()
-                .getResourceAsStream("report/LAPENGALL.jrxml");
-
-        if (reportStream == null) {
-            JOptionPane.showMessageDialog(null, "File laporan tidak ditemukan!");
-            return;
-        }
-
-        JasperReport jr = JasperCompileManager.compileReport(reportStream);
-
-        JasperPrint jp = JasperFillManager.fillReport(jr, null, dataSource);
-
-        JasperViewer viewer = new JasperViewer(jp, false);
-        viewer.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH); // fullscreen
-        viewer.setFitPageZoomRatio(); // pas dengan halaman
-        viewer.setVisible(true);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Gagal Cetak Laporan: " + e.getMessage());
-        e.printStackTrace();
+    // 🔥 WAJIB MINIMAL 1 FILTER
+    if (!adaTanggal && !adaCari && !adaKategori) {
+        JOptionPane.showMessageDialog(null, "Gunakan minimal 1 filter (Tanggal / Cari / Kategori)!");
+        return;
     }
+
+    Connection conn = Koneksi.KoneksiDB();
+
+    String sql = "SELECT " +
+        "p.id_pengaduan AS pengaduan_id_pengaduan, " +
+        "p.nik AS pengaduan_nik, " +
+        "p.tgl_pengaduan AS pengaduan_tgl_pengaduan, " +
+        "p.isi_laporan AS pengaduan_isi_laporan, " +
+        "p.nama AS pengaduan_nama, " +
+        "p.foto AS pengaduan_foto, " +
+        "p.lokasi AS pengaduan_lokasi, " +
+        "p.Kategori AS pengaduan_Kategori, " +
+        "p.status AS pengaduan_status, " +
+
+        "t.id_tanggapan AS tanggapan_id_tanggapan, " +
+        "t.id_pengaduan AS tanggapan_id_pengaduan, " +
+        "t.nik AS tanggapan_nik, " +
+        "t.nama AS tanggapan_nama, " +
+        "t.isi_pengaduan AS tanggapan_isi_pengaduan, " +
+        "t.feedback AS tanggapan_feedback, " +
+        "t.status AS tanggapan_status, " +
+        "t.tgl_tang AS tanggapan_tanggal, " +
+        "t.tgl_tang AS tanggapan_tgl_tang, " +
+        "t.foto AS tanggapan_foto, " +
+        "t.kategori AS tanggapan_kategori, " +
+        "t.lokasi AS tanggapan_lokasi, " +
+        "t.id_petugas AS tanggapan_id_petugas " +
+
+        "FROM tanggapan t " +
+        "INNER JOIN pengaduan p ON t.id_pengaduan = p.id_pengaduan " +
+        "WHERE t.status = 'tertanggapi' ";
+
+    // 🔥 TAMBAH FILTER DINAMIS
+    if (adaCari) {
+        sql += "AND (t.nik LIKE ? OR t.nama LIKE ?) ";
+    }
+
+    if (adaKategori) {
+        sql += "AND t.kategori = ? ";
+    }
+
+    if (adaTanggal) {
+        sql += "AND DATE(t.tgl_tang) BETWEEN ? AND ? ";
+    }
+
+    sql += "ORDER BY t.tgl_tang DESC";
+
+    PreparedStatement pst = conn.prepareStatement(sql);
+
+    int index = 1;
+
+    // 🔥 SET PARAMETER SESUAI URUTAN
+    if (adaCari) {
+        pst.setString(index++, "%" + cari + "%");
+        pst.setString(index++, "%" + cari + "%");
+    }
+
+    if (adaKategori) {
+        pst.setString(index++, kategori);
+    }
+
+    if (adaTanggal) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        pst.setString(index++, df.format(jDateChooser1.getDate()));
+        pst.setString(index++, df.format(jDateChooser2.getDate()));
+    }
+
+    ResultSet rs = pst.executeQuery();
+
+    if (!rs.isBeforeFirst()) {
+        JOptionPane.showMessageDialog(null, "Data tidak ditemukan!");
+        return;
+    }
+
+    JRResultSetDataSource dataSource = new JRResultSetDataSource(rs);
+
+    InputStream reportStream = getClass()
+            .getClassLoader()
+            .getResourceAsStream("report/LAPENGALL.jrxml");
+
+    JasperReport jr = JasperCompileManager.compileReport(reportStream);
+
+    JasperPrint jp = JasperFillManager.fillReport(jr, null, dataSource);
+
+    JasperViewer viewer = new JasperViewer(jp, false);
+    viewer.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    viewer.setFitPageZoomRatio();
+    viewer.setVisible(true);
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Gagal Cetak Laporan: " + e.getMessage());
+    e.printStackTrace();
+}
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txt_cariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cariKeyReleased
+         // TODO add your handling code here:
+                  // TODO add your handling code here:                                        
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("ID Tanggapan");
+        model.addColumn("ID Peng");
+        model.addColumn("NIK");
+        model.addColumn("Nama");
+        model.addColumn("Tanggal Pengaduan");
+        model.addColumn("Tanggal Tanggapan");
+        model.addColumn("Nama Petugas");
+        model.addColumn("Isi Pengaduan");
+        model.addColumn("Kategori");
+        model.addColumn("Lokasi");
+        model.addColumn("Status");
+        model.addColumn("Feedback");
+        model.addColumn("Foto");
+
+    try {
+        String cari = txt_cari.getText().trim();
+        String pilihan = cb_kategori.getSelectedItem().toString(); // ComboBox lu
+
+        String sql = "";
+
+       if (pilihan.equals("NIK/NISN")) {
+    sql = "SELECT * FROM tanggapan WHERE nik LIKE ? AND status='tertanggapi' ORDER BY tanggal DESC";
+} else if (pilihan.equals("Nama")) {
+    sql = "SELECT * FROM tanggapan WHERE nama LIKE ? AND status='tertanggapi' ORDER BY tanggal DESC";
+}
+
+        Connection conn = Koneksi.KoneksiDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, "%" + cari + "%");
+
+        ResultSet res = pst.executeQuery();
+
+       
+        while (res.next()) {
+            model.addRow(new Object[]{         
+                res.getString("id_tanggapan"),
+                res.getString("id_pengaduan"),
+                res.getString("nik"),
+                res.getString("nama"),
+                res.getString("tanggal"),      // Tanggal Pengaduan
+                res.getString("tgl_tang"),     // Tanggal Tanggapan
+                res.getString("id_petugas"),   // Kalau belum ada nama petugas
+                res.getString("isi_pengaduan"),
+                res.getString("kategori"),
+                res.getString("lokasi"),
+                res.getString("status"),
+                res.getString("feedback"),
+                res.getString("foto")
+            });
+        }
+
+        tabel_pengaduan.setModel(model);
+
+    } catch (Exception e) {
+        System.out.println("Error search: " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_txt_cariKeyReleased
+
+    private void cmb_kategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_kategoriActionPerformed
+        if (cmb_kategori.getSelectedItem() == null) return;
+
+    String kategori = cmb_kategori.getSelectedItem().toString();
+
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("ID Tanggapan");
+    model.addColumn("ID Peng");
+        model.addColumn("NIK");
+        model.addColumn("Nama");
+        model.addColumn("Tanggal Pengaduan");
+        model.addColumn("Tanggal Tanggapan");
+        model.addColumn("Nama Petugas");
+        model.addColumn("Isi Pengaduan");
+        model.addColumn("Kategori");
+        model.addColumn("Lokasi");
+        model.addColumn("Status");
+        model.addColumn("Feedback");
+        model.addColumn("Foto");
+
+    try {
+        String sql = "SELECT * FROM tanggapan WHERE kategori LIKE ? AND status='tertanggapi' ORDER BY tanggal DESC";
+        Connection conn = Koneksi.KoneksiDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, kategori);
+
+        ResultSet res = pst.executeQuery();
+
+        
+        while (res.next()) {
+            model.addRow(new Object[]{
+                
+                res.getString("id_tanggapan"),
+                res.getString("id_pengaduan"),
+                res.getString("nik"),
+                res.getString("nama"),
+                res.getString("tanggal"),      // Tanggal Pengaduan
+                res.getString("tgl_tang"),     // Tanggal Tanggapan
+                res.getString("id_petugas"),   // Kalau belum ada nama petugas
+                res.getString("isi_pengaduan"),
+                res.getString("kategori"),
+                res.getString("lokasi"),
+                res.getString("status"),
+                res.getString("feedback"),
+                res.getString("foto")
+            });
+        }
+
+        tabel_pengaduan.setModel(model);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_kategoriActionPerformed
 
     /**
      * @param args the command line arguments
@@ -583,6 +752,8 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cb_kategori;
+    private javax.swing.JComboBox<String> cmb_kategori;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -595,47 +766,64 @@ try {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabel_pengaduan;
+    private javax.swing.JTextField txt_cari;
     // End of variables declaration//GEN-END:variables
 
    
 
-private void tampilData() {
-    model.setRowCount(0);
+public void load_riwayat() {
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("ID Tanggapan");
+    model.addColumn("ID Peng");
+        model.addColumn("NIK");
+        model.addColumn("Nama");
+        model.addColumn("Tanggal Pengaduan");
+        model.addColumn("Tanggal Tanggapan");
+        model.addColumn("Nama Petugas");
+        model.addColumn("Isi Pengaduan");
+        model.addColumn("Kategori");
+        model.addColumn("Lokasi");
+        model.addColumn("Status");
+        model.addColumn("Feedback");
+        model.addColumn("Foto");
 
-    try {
-        Connection conn = Koneksi.KoneksiDB();
-        String sql = "SELECT * FROM tanggapan "
-           + "WHERE status = 'tertanggapi' "
-           + "ORDER BY id_tanggapan ASC";
-        Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery(sql);
+   try {
+    
 
-        while (rs.next()) {
-            String[] data = {
-                rs.getString("id_tanggapan"),
-                rs.getString("id_pengaduan"),
-                rs.getString("nik"),
-                rs.getString("nama"),
-                rs.getString("tanggal"),      // Tanggal Pengaduan
-                rs.getString("tgl_tang"),     // Tanggal Tanggapan
-                rs.getString("id_petugas"),   // Kalau belum ada nama petugas
-                rs.getString("isi_pengaduan"),
-                rs.getString("kategori"),
-                rs.getString("lokasi"),
-                rs.getString("status"),
-                rs.getString("feedback"),
-                rs.getString("foto")
-            };
+    Connection conn = Koneksi.KoneksiDB();
+    PreparedStatement pst;
+    ResultSet res;
 
-            model.addRow(data);
-        }
+    // 🔥 Tanpa session → selalu tampil semua
+    String sql = "SELECT * FROM tanggapan WHERE status='tertanggapi' ORDER BY tanggal DESC";
+    pst = conn.prepareStatement(sql);
 
-        rs.close();
-        st.close();
+    res = pst.executeQuery();
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Gagal tampil data: " + e.getMessage());
+    while (res.next()) {
+        model.addRow(new Object[]{
+           
+            res.getString("id_tanggapan"),
+                res.getString("id_pengaduan"),
+                res.getString("nik"),
+                res.getString("nama"),
+                res.getString("tanggal"),      // Tanggal Pengaduan
+                res.getString("tgl_tang"),     // Tanggal Tanggapan
+                res.getString("id_petugas"),   // Kalau belum ada nama petugas
+                res.getString("isi_pengaduan"),
+                res.getString("kategori"),
+                res.getString("lokasi"),
+                res.getString("status"),
+                res.getString("feedback"),
+                res.getString("foto")
+        });
     }
+
+    tabel_pengaduan.setModel(model);
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Gagal Load Data: " + e.getMessage());
+}
 }
 
 

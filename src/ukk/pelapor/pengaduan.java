@@ -75,14 +75,14 @@ public class pengaduan extends javax.swing.JFrame {
         //memberi penamaan pada judul kolom ; 
         model = new DefaultTableModel();
         jTable1.setModel(model);
-        model.addColumn("id pengaduan");
-        model.addColumn("nik");
-        model.addColumn("nama");
+        model.addColumn("ID Pengaduan");
+        model.addColumn("NIK");
+        model.addColumn("Nama");
         model.addColumn("Tanggal Pengaduan");
         model.addColumn("Isi Laporan");
         model.addColumn("Foto");
         model.addColumn("Kategori");
-        model.addColumn("lokasi");
+        model.addColumn("Lokasi");
         model.addColumn("Status");
         
         
@@ -417,6 +417,11 @@ public class pengaduan extends javax.swing.JFrame {
                 cmb_kategoriActionPerformed(evt);
             }
         });
+        cmb_kategori.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cmb_kategoriKeyReleased(evt);
+            }
+        });
         jPanel1.add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1570, 180, 230, 40));
         jPanel1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 240, 310, 40));
         jPanel1.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1360, 240, 300, 40));
@@ -511,7 +516,7 @@ public class pengaduan extends javax.swing.JFrame {
         modelBaru.addColumn("ID Pengaduan");
         modelBaru.addColumn("NIK");
         modelBaru.addColumn("Nama");
-        modelBaru.addColumn("Tanggal");
+        modelBaru.addColumn("Tanggal Pengaudan");
         modelBaru.addColumn("Isi Laporan");
         modelBaru.addColumn("Foto");
         modelBaru.addColumn("Kategori");
@@ -655,7 +660,7 @@ bersih();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        bersih();
+         bersih();
         refreshSemua();
         tampilIdPengaduan();
         getData();
@@ -743,95 +748,91 @@ try {
 
     private void txt_cariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cariKeyReleased
      // Membuat model tabel baru (wadah untuk menampung data hasil query)
-        DefaultTableModel model = new DefaultTableModel();
+      DefaultTableModel model = new DefaultTableModel();
 
-        // Menambahkan nama kolom pada tabel
-//        model.addColumn("No");                // Nomor urut
-        model.addColumn("ID Pengaduan");      // ID pengaduan
-        model.addColumn("NIK");               // NIK pelapor
-        model.addColumn("Nama");              // Nama pelapor
-        model.addColumn("Tanggal");           // Tanggal pengaduan
-        model.addColumn("Isi Laporan");       // Isi laporan
-        model.addColumn("Foto");              // Foto bukti
-        model.addColumn("Kategori");          // Kategori (Sarana/Prasarana)
-        model.addColumn("Lokasi");            // Lokasi kejadian
-        model.addColumn("Status");            // Status pengaduan
+    // Kolom tabel
+    model.addColumn("ID Pengaduan");
+    model.addColumn("NIK");
+    model.addColumn("Nama");
+    model.addColumn("Tanggal Pengaudan");
+    model.addColumn("Isi Laporan");
+    model.addColumn("Foto");
+    model.addColumn("Kategori");
+    model.addColumn("Lokasi");
+    model.addColumn("Status");
 
-        try {
+    try {
+        // Ambil input
+        String cari = txt_cari.getText().trim();
+        String kategori = cmb_kategori.getSelectedItem().toString();
 
-            // Mengambil teks dari field pencarian dan menghapus spasi berlebih
-            String cari = txt_cari.getText().trim();
+        // 🔥 Ambil NIK dari session (WAJIB)
+        String nikLogin = session.getNik();
 
-            // Mengambil pilihan kategori dari combobox
-            String kategori = cmb_kategori.getSelectedItem().toString();
+        // Query dasar (tambahkan filter NIK login)
+        String sql = "SELECT * FROM pengaduan WHERE status = 'menunggu' AND nik = ?";
 
-            // Query dasar (1=1 supaya mudah ditambahkan kondisi AND)
-            String sql = "SELECT * FROM pengaduan WHERE status = 'menunggu'";
-
-            // Jika kolom pencarian tidak kosong, tambahkan filter nama
-            if (!cari.equals("")) {
-                sql += " AND nama LIKE ?";
-            }
-
-            // Jika kategori bukan "Semua", tambahkan filter kategori
-            if (!kategori.equals("Semua")) {
-                sql += " AND Kategori = ?";
-            }
-
-            // Mengurutkan data berdasarkan tanggal terbaru
-            sql += " ORDER BY tgl_pengaduan DESC";
-
-            // Menyiapkan prepared statement
-            PreparedStatement pst = conn.prepareStatement(sql);
-
-            int index = 1; // Untuk mengatur urutan tanda ? pada query
-
-            // Jika ada pencarian nama, isi parameter pertama
-            if (!cari.equals("")) {
-                pst.setString(index++, "%" + cari + "%"); 
-                // % digunakan agar bisa mencari sebagian kata
-            }
-
-            // Jika ada filter kategori, isi parameter berikutnya
-            if (!kategori.equals("Semua")) {
-                pst.setString(index++, kategori);
-            }
-
-            // Menjalankan query
-            ResultSet res = pst.executeQuery();
-
-            int no = 1; // Nomor urut tabel
-
-            // Perulangan untuk mengambil semua data dari hasil query
-            while (res.next()) {
-
-                // Menambahkan setiap baris data ke dalam tabel
-                model.addRow(new Object[]{
-                   // no++,                                   // Nomor urut otomatis
-                    res.getString("id_pengaduan"),           // Ambil data id_pengaduan
-                    res.getString("nik"),                    // Ambil data nik
-                    res.getString("nama"),                   // Ambil data nama
-                    res.getString("tgl_pengaduan"),          // Ambil tanggal
-                    res.getString("isi_laporan"),            // Ambil isi laporan
-                    res.getString("foto"),                   // Ambil foto
-                    res.getString("Kategori"),               // Ambil kategori
-                    res.getString("lokasi"),                 // Ambil lokasi
-                    res.getString("status")                  // Ambil status
-                });
-            }
-
-            // Menampilkan model ke JTable
-            jTable1.setModel(model);
-
-           
-
-        } catch (Exception e) {
-
-            // Menampilkan error di console (agar tidak mengganggu auto-search)
-            System.out.println("Error search: " + e.getMessage());
+        // Filter pencarian nama
+        if (!cari.equals("")) {
+            sql += " AND nama LIKE ?";
         }
+
+        // Filter kategori
+        if (!kategori.equals("Semua")) {
+            sql += " AND kategori = ?";
+        }
+
+        // Urutkan
+        sql += " ORDER BY tgl_pengaduan DESC";
+
+        // Prepare statement
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        int index = 1;
+
+        // 🔥 PARAMETER WAJIB PERTAMA (NIK LOGIN)
+        pst.setString(index++, nikLogin);
+
+        // Parameter pencarian
+        if (!cari.equals("")) {
+            pst.setString(index++, "%" + cari + "%");
+        }
+
+        // Parameter kategori
+        if (!kategori.equals("Semua")) {
+            pst.setString(index++, kategori);
+        }
+
+        // Eksekusi query
+        ResultSet res = pst.executeQuery();
+
+        // Loop data
+        while (res.next()) {
+            model.addRow(new Object[]{
+                res.getString("id_pengaduan"),
+                res.getString("nik"),
+                res.getString("nama"),
+                res.getString("tgl_pengaduan"),
+                res.getString("isi_laporan"),
+                res.getString("foto"),
+                res.getString("kategori"),
+                res.getString("lokasi"),
+                res.getString("status")
+            });
+        }
+
+        // Tampilkan ke tabel
+        jTable1.setModel(model);
+
+    } catch (Exception e) {
+        System.out.println("Error search: " + e.getMessage());
+    }
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_cariKeyReleased
+
+    private void cmb_kategoriKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_kategoriKeyReleased
+         // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_kategoriKeyReleased
 
     /**
      * @param args the command line arguments

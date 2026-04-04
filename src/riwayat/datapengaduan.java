@@ -53,6 +53,8 @@ public class datapengaduan extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
     
+    boolean sedangRefresh = false;
+    
     String pathFoto = null;
 
  
@@ -126,6 +128,54 @@ public class datapengaduan extends javax.swing.JFrame {
      //  txt_pengaduan.setText("");
        txt_cari.setText("");
    }
+    
+   void filterKategori() {
+    DefaultTableModel modelBaru = new DefaultTableModel();
+
+    modelBaru.addColumn("id pengaduan");
+    modelBaru.addColumn("nik");
+    modelBaru.addColumn("nama");
+    modelBaru.addColumn("Tanggal Pengaduan");
+    modelBaru.addColumn("Isi Laporan");
+    modelBaru.addColumn("Foto");
+    modelBaru.addColumn("Kategori");
+    modelBaru.addColumn("lokasi");
+    modelBaru.addColumn("Status");
+
+    try {
+        String kategori = cmb_kategori.getSelectedItem().toString();
+
+        // FILTER
+        String sql = "SELECT * FROM pengaduan WHERE Kategori=? ORDER BY tgl_pengaduan DESC";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, kategori);
+
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            modelBaru.addRow(new Object[]{
+                rs.getString("id_pengaduan"),
+                rs.getString("nik"),
+                rs.getString("nama"),
+                rs.getString("tgl_pengaduan"),
+                rs.getString("isi_laporan"),
+                rs.getString("foto"),
+                rs.getString("Kategori"),
+                rs.getString("lokasi"),
+                rs.getString("status")
+            });
+        }
+
+        jTable1.setModel(modelBaru);
+
+        // total
+        
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -145,7 +195,6 @@ public class datapengaduan extends javax.swing.JFrame {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         txt_cari = new javax.swing.JTextField();
-        lbl_total = new javax.swing.JLabel();
         btn_detail = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
@@ -161,10 +210,9 @@ public class datapengaduan extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 950, 110, 40));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 970, 110, 40));
 
         jButton7.setBackground(new java.awt.Color(0,0,0,0));
-        jButton7.setText("exit");
         jButton7.setBorder(null);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -210,7 +258,7 @@ public class datapengaduan extends javax.swing.JFrame {
                 cmb_kategoriActionPerformed(evt);
             }
         });
-        jPanel1.add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 180, 220, 50));
+        jPanel1.add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 180, 220, 50));
         jPanel1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 270, 30));
         jPanel1.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 250, 250, 30));
 
@@ -226,10 +274,6 @@ public class datapengaduan extends javax.swing.JFrame {
             }
         });
         jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 750, 50));
-
-        lbl_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lbl_total.setText("TOTAL:");
-        jPanel1.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 960, -1, -1));
 
         btn_detail.setBackground(new java.awt.Color(0,0,0,0));
         btn_detail.setBorder(null);
@@ -325,30 +369,31 @@ public class datapengaduan extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-          try {
-        // 1️⃣ Hapus input tanggal
+try {
+        sedangRefresh = true; // 🔥 aktifkan mode refresh
+
+        // reset tanggal
         jDateChooser1.setDate(null);
         jDateChooser2.setDate(null);
 
-        // 2️⃣ Bersihkan field input lainnya (opsional)
-        bersih(); // ini membersihkan txt_nik, txt_nama, txt_isi, lokasi, foto, dll
+        // tampilkan semua data
+        bersih();
+        getData();
 
-        // 3️⃣ Refresh tabel dengan semua data (tanpa filter tanggal)
-        getData(); // method getData() sudah mengambil semua data untuk user yang login
+        
+        sedangRefresh = false; // 🔥 matikan mode refresh
 
-        // 4️⃣ Update label total data
-        lbl_total.setText("TOTAL DATA: " + jTable1.getRowCount() + " Aspirasi");
-
-        // 5️⃣ Pesan opsional
-        // JOptionPane.showMessageDialog(this, "Data berhasil direfresh!");
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Gagal refresh: " + e.getMessage());
     }
-
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void cmb_kategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_kategoriActionPerformed
+        // 🔥 Kalau sedang refresh, jangan jalankan filter
+    if (sedangRefresh) return;
+
+    filterKategori();
         // TODO add your handling code here:
     }//GEN-LAST:event_cmb_kategoriActionPerformed
 
@@ -439,7 +484,7 @@ public class datapengaduan extends javax.swing.JFrame {
             jTable1.setModel(model);
 
             // Menampilkan total data yang ditemukan
-            lbl_total.setText("TOTAL HASIL: " + model.getRowCount() + " Data");
+         
 
         } catch (Exception e) {
 
@@ -572,7 +617,6 @@ public class datapengaduan extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lbl_total;
     private javax.swing.JTextField txt_cari;
     // End of variables declaration//GEN-END:variables
     

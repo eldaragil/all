@@ -34,6 +34,17 @@ Connection conn = null;
         conn = Koneksi.KoneksiDB();
         this.setLocationRelativeTo(null);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
+         // validasi hanya angka yg diketik
+        usernameTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            char c = evt.getKeyChar();
+
+            if (!Character.isDigit(c)) {
+                evt.consume(); // blok selain angka
+            }
+        }
+    });
     }
     
     private ImageIcon resizeIcon(String path, int width, int height) {
@@ -137,8 +148,26 @@ Connection conn = null;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-      String nik = usernameTxt.getText();
+    String nik = usernameTxt.getText();
     String password = passwordTxt.getText();
+    
+        // VALIDASI KOSONG
+    if (nik.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Silahkan isi NIK dan Password");
+        return;
+    }
+
+    // VALIDASI NIK angka & minimal 8 digit
+    if (!nik.matches("\\d{8,}")) {
+        JOptionPane.showMessageDialog(null, "NIK harus angka dan minimal 8 digit!");
+        return;
+    }
+
+    //  (PASSWORD)
+    if (password.length() < 8) {
+        JOptionPane.showMessageDialog(null, "Password minimal 8 karakter!");
+        return;
+    }
 
     if (nik.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Silahkan isi NIK dan Password");

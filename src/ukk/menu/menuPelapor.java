@@ -7,6 +7,7 @@ package ukk.menu;
 //import ukk.formTransaksi;
 //import ukk.formCRUDBarang;
 
+import javax.swing.JOptionPane;
 import riwayat.RiwayatAspirasi;
 import riwayat.RiwayatTanggapanAdmin;
 import riwayat.datapengaduan;
@@ -145,10 +146,28 @@ public class menuPelapor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        login login = new login();
-        login.setVisible(true);
-        this.setVisible(false);
-        this.dispose(); 
+                                                
+    // 1. Tampilkan dialog konfirmasi
+    int confirm = JOptionPane.showConfirmDialog(this, 
+            "Apakah Anda yakin ingin Keluar?", 
+            "Konfirmasi Keluar", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.QUESTION_MESSAGE);
+
+    // 2. Jika user pilih 'Yes' (Ya)
+    if (confirm == JOptionPane.YES_OPTION) {
+        try {
+            // Panggil Menu Admin (Pastikan nama class-nya benar)
+            // Jika MenuAdmin ada di package lain, NetBeans akan minta Import otomatis
+            new ukk.login_register.login().setVisible(true); 
+            
+            // Tutup form riwayat yang sekarang
+            this.dispose(); 
+        } catch (Exception e) {
+            // Jaga-jaga kalau ada error saat pindah form
+            JOptionPane.showMessageDialog(this, "Gagal kembali ke menu: " + e.getMessage());
+        }
+    }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 

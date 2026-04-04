@@ -61,7 +61,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     ResultSet res;
 
     // 🔥 Tanpa session → selalu tampil semua
-    String sql = "SELECT * FROM aspirasi ORDER BY tanggal DESC";
+    String sql = "SELECT * FROM aspirasi WHERE status IN ('terimakasih','diterapkan') ORDER BY tanggal DESC";
     pst = conn.prepareStatement(sql);
 
     res = pst.executeQuery();
@@ -78,7 +78,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     }
 
     tb_riwayat.setModel(model);
-    lbl_total.setText("TOTAL DATA: " + tb_riwayat.getRowCount() + " Aspirasi");
 
 } catch (Exception e) {
     JOptionPane.showMessageDialog(this, "Gagal Load Data: " + e.getMessage());
@@ -103,12 +102,12 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         tgl_dari = new com.toedter.calendar.JDateChooser();
         tgl_sampai = new com.toedter.calendar.JDateChooser();
         btn_filter = new javax.swing.JButton();
-        lbl_total = new javax.swing.JLabel();
         btn_detail = new javax.swing.JButton();
         btn_cetak_filter = new javax.swing.JButton();
         btn_cetak_all = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        cmb_kategori = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -147,8 +146,13 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
 
         cb_kategori.setBackground(new java.awt.Color(0,0,0,0));
         cb_kategori.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nama", "Kategori" }));
+        cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NIK/NISN", "Nama" }));
         cb_kategori.setBorder(null);
+        cb_kategori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_kategoriActionPerformed(evt);
+            }
+        });
         jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 180, 210, 50));
 
         tgl_dari.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -164,10 +168,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btn_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 240, 150, 50));
-
-        lbl_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lbl_total.setText("TOTAL DATA :");
-        jPanel1.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 960, -1, -1));
 
         btn_detail.setBackground(new java.awt.Color(0,0,0,0));
         btn_detail.setBorder(null);
@@ -203,7 +203,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 950, 110, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 940, 110, 40));
 
         jButton2.setBackground(new java.awt.Color(0,0,0,0));
         jButton2.setBorder(null);
@@ -213,6 +213,19 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 950, 120, 40));
+
+        cmb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semua", "Hardware PC Lab", "Software & Library", "Jaringan & Internet", "Sarana Ruang Praktik", "Kelistrikan & Kabel" }));
+        cmb_kategori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_kategoriActionPerformed(evt);
+            }
+        });
+        cmb_kategori.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cmb_kategoriKeyReleased(evt);
+            }
+        });
+        jPanel1.add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1480, 180, 170, 50));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/riwayat aspirasi adm.png"))); // NOI18N
@@ -253,7 +266,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         String sampai = sdf.format(tgl_sampai.getDate());
 
         int no = 1;
-        String sql = "SELECT * FROM aspirasi WHERE tanggal BETWEEN ? AND ? ORDER BY tanggal ASC";
+        String sql = "SELECT * FROM aspirasi WHERE tanggal BETWEEN ? AND ? AND status IN ('terimakasih','diterapkan') ORDER BY tanggal DESC";
         
         java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
         java.sql.PreparedStatement pst = conn.prepareStatement(sql);
@@ -272,7 +285,6 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
             });
         }
         tb_riwayat.setModel(model);
-        lbl_total.setText("TOTAL DATA FILTER: " + tb_riwayat.getRowCount() + " Aspirasi");
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Gagal filter: " + e.getMessage());
@@ -284,41 +296,86 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
         // TODO add your handling code here:                                                                                               
    try {
 
-    if (tgl_dari.getDate() == null || tgl_sampai.getDate() == null) {
-        JOptionPane.showMessageDialog(this, "Silakan pilih rentang tanggal!");
+    String cari = txt_cari_nama.getText().trim();
+    String pilihan = cb_kategori.getSelectedItem().toString();
+    String kategori = cmb_kategori.getSelectedItem().toString();
+
+    boolean adaTanggal = (tgl_dari.getDate() != null && tgl_sampai.getDate() != null);
+    boolean adaCari = !cari.equals("");
+    boolean adaKategori = !kategori.equalsIgnoreCase("Semua");
+
+    // 🔥 VALIDASI WAJIB FILTER
+    if (!adaTanggal && !adaCari && !adaKategori) {
+        JOptionPane.showMessageDialog(null, "Gunakan minimal 1 filter (Tanggal / Cari / Kategori)!");
         return;
     }
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String dari = sdf.format(tgl_dari.getDate());
-    String sampai = sdf.format(tgl_sampai.getDate());
+    StringBuilder sql = new StringBuilder(
+        "SELECT " +
+        "id_aspirasi AS aspirasi_id_aspirasi, " +
+        "nik AS aspirasi_nik, " +
+        "nama AS aspirasi_nama, " +
+        "isi_aspirasi AS aspirasi_isi_aspirasi, " +
+        "kategori AS aspirasi_kategori, " +
+        "status AS aspirasi_status, " +
+        "tanggal AS aspirasi_tanggal, " +
+        "tanggal_tang AS aspirasi_tanggal_tang " +
+        "FROM aspirasi WHERE status IN ('terimakasih','diterapkan') "
+    );
 
-    String sql = "SELECT "
-        + "id_aspirasi AS aspirasi_id_aspirasi, "
-        + "nik AS aspirasi_nik, "
-        + "nama AS aspirasi_nama, "
-        + "isi_aspirasi AS aspirasi_isi_aspirasi, "
-        + "kategori AS aspirasi_kategori, "
-        + "status AS aspirasi_status, "
-        + "tanggal AS aspirasi_tanggal, "
-        + "tanggal_tang AS aspirasi_tanggal_tang "
-        + "FROM aspirasi "
-        + "WHERE tanggal BETWEEN ? AND ? "
-        + "AND status IN ('terimakasih','diterapkan') "
-        + "ORDER BY tanggal ASC";
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    // 🔥 FILTER TANGGAL
+    if (adaTanggal) {
+        sql.append(" AND tanggal BETWEEN ? AND ? ");
+    }
+
+    // 🔥 FILTER SEARCH
+    if (adaCari) {
+        if (pilihan.equals("NIK/NISN")) {
+            sql.append(" AND nik LIKE ? ");
+        } else {
+            sql.append(" AND nama LIKE ? ");
+        }
+    }
+
+    // 🔥 FILTER KATEGORI
+    if (adaKategori) {
+        sql.append(" AND kategori = ? ");
+    }
+
+    sql.append(" ORDER BY tanggal ASC ");
 
     Connection conn = Koneksi.Koneksi.KoneksiDB();
-    PreparedStatement pst = conn.prepareStatement(sql);
+    PreparedStatement pst = conn.prepareStatement(sql.toString());
 
-    pst.setString(1, dari);
-    pst.setString(2, sampai);
+    int index = 1;
+
+    // 🔥 SET PARAMETER
+    if (adaTanggal) {
+        pst.setString(index++, sdf.format(tgl_dari.getDate()));
+        pst.setString(index++, sdf.format(tgl_sampai.getDate()));
+    }
+
+    if (adaCari) {
+        pst.setString(index++, "%" + cari + "%");
+    }
+
+    if (adaKategori) {
+        pst.setString(index++, kategori);
+    }
 
     ResultSet rp = pst.executeQuery();
+
+    if (!rp.isBeforeFirst()) {
+        JOptionPane.showMessageDialog(null, "Data tidak ditemukan!");
+        return;
+    }
 
     JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
 
     JasperReport jasperReport = JasperCompileManager.compileReport(
-            "D:/buiza/ukk/src/report/aspirasi.jrxml"
+        "D:/buiza/ukk/src/report/aspirasi.jrxml"
     );
 
     JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
@@ -340,12 +397,18 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cetak_filterActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here
+          // TODO add your handling code here
     txt_cari_nama.setText("");        // Mengosongkan kolom cari
     tgl_dari.setDate(null);           // Mengosongkan filter tanggal awal
     tgl_sampai.setDate(null);         // Mengosongkan filter tanggal akhir
     cb_kategori.setSelectedIndex(0);  // Mengembalikan combobox ke pilihan pertama
+    cmb_kategori.setSelectedIndex(0);
     load_riwayat();                   // Memanggil kembali semua data dari database
+    
+   
+    
+
+    
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -449,44 +512,51 @@ try {
     }//GEN-LAST:event_btn_cetak_allActionPerformed
 
     private void txt_cari_namaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cari_namaKeyReleased
-        // TODO add your handling code here:                                        
+         // TODO add your handling code here:                                        
     DefaultTableModel model = new DefaultTableModel();
     model.addColumn("No");
     model.addColumn("Tanggal");
+    model.addColumn("NIK");
     model.addColumn("Nama");
     model.addColumn("Isi Aspirasi");
-    model.addColumn("Kategori"); 
+    model.addColumn("Kategori");
     model.addColumn("Status");
 
     try {
-        String cari = txt_cari_nama.getText();
-        // Query tetap sama, mencari dari depan
-        String sql = "SELECT * FROM aspirasi WHERE (nama LIKE ? OR kategori LIKE ? OR isi_aspirasi LIKE ?) ORDER BY tanggal DESC";
+        String cari = txt_cari_nama.getText().trim();
+        String pilihan = cb_kategori.getSelectedItem().toString(); // ComboBox lu
 
-        java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
-        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, cari + "%"); 
-        pst.setString(2, cari + "%"); 
-        pst.setString(3, cari + "%"); 
-        
-        java.sql.ResultSet res = pst.executeQuery();
+        String sql = "";
+
+        if (pilihan.equals("NIK/NISN")) {
+        sql = "SELECT * FROM aspirasi WHERE nik LIKE ? AND status IN ('terimakasih','diterapkan') ORDER BY tanggal DESC";
+    } else if (pilihan.equals("Nama")) {
+        sql = "SELECT * FROM aspirasi WHERE nama LIKE ? AND status IN ('terimakasih','diterapkan') ORDER BY tanggal DESC";
+    }
+
+        Connection conn = Koneksi.Koneksi.KoneksiDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, "%" + cari + "%");
+
+        ResultSet res = pst.executeQuery();
 
         int no = 1;
         while (res.next()) {
             model.addRow(new Object[]{
-                no++, 
-                res.getString("tanggal"), 
-                res.getString("nama"), 
-                res.getString("isi_aspirasi"), 
-                res.getString("kategori"), 
+                no++,
+                res.getString("tanggal"),
+                res.getString("nik"),
+                res.getString("nama"),
+                res.getString("isi_aspirasi"),
+                res.getString("kategori"),
                 res.getString("status")
             });
         }
+
         tb_riwayat.setModel(model);
-        lbl_total.setText("TOTAL HASIL: " + tb_riwayat.getRowCount() + " Aspirasi");
 
     } catch (Exception e) {
-        // Untuk auto-search, sebaiknya tidak pakai JOptionPane error agar tidak mengganggu saat mengetik
         System.out.println("Error search: " + e.getMessage());
     }
 
@@ -495,6 +565,56 @@ try {
     private void txt_cari_namaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cari_namaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_cari_namaActionPerformed
+
+    private void cmb_kategoriKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_kategoriKeyReleased
+         // TODO add your handling code here:
+       
+    }//GEN-LAST:event_cmb_kategoriKeyReleased
+
+    private void cmb_kategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_kategoriActionPerformed
+         // TODO add your handling code here:
+           if (cmb_kategori.getSelectedItem() == null) return;
+
+    String kategori = cmb_kategori.getSelectedItem().toString();
+
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("No");
+    model.addColumn("Tanggal");
+    model.addColumn("Nama");
+    model.addColumn("Isi Aspirasi");
+    model.addColumn("Kategori");
+    model.addColumn("Status");
+
+    try {
+        String sql = "SELECT * FROM aspirasi WHERE kategori=? AND status IN ('terimakasih','diterapkan') ORDER BY tanggal DESC";
+        Connection conn = Koneksi.Koneksi.KoneksiDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, kategori);
+
+        ResultSet rs = pst.executeQuery();
+
+        int no = 1;
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                no++,
+                rs.getString("tanggal"),
+                rs.getString("nama"),
+                rs.getString("isi_aspirasi"),
+                rs.getString("kategori"),
+                rs.getString("status")
+            });
+        }
+
+        tb_riwayat.setModel(model);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+    }//GEN-LAST:event_cmb_kategoriActionPerformed
+
+    private void cb_kategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_kategoriActionPerformed
+         // TODO add your handling code here:
+    }//GEN-LAST:event_cb_kategoriActionPerformed
 
     /**
      * @param args the command line arguments
@@ -537,12 +657,12 @@ try {
     private javax.swing.JButton btn_detail;
     private javax.swing.JButton btn_filter;
     private javax.swing.JComboBox<String> cb_kategori;
+    private javax.swing.JComboBox<String> cmb_kategori;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbl_total;
     private javax.swing.JTable tb_riwayat;
     private com.toedter.calendar.JDateChooser tgl_dari;
     private com.toedter.calendar.JDateChooser tgl_sampai;

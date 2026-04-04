@@ -24,6 +24,7 @@ import java.sql.Statement;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import ukk.menu.menuPelapor;
 import ukk.session;
 
 public class RiwayatTanggapanP extends javax.swing.JFrame {
@@ -241,69 +242,16 @@ public class RiwayatTanggapanP extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-                                        
-    // 1. Tampilkan dialog konfirmasi
-    int confirm = JOptionPane.showConfirmDialog(this, 
-            "Apakah Anda yakin ingin kembali ke Menu Utama?", 
-            "Konfirmasi Keluar", 
-            JOptionPane.YES_NO_OPTION, 
-            JOptionPane.QUESTION_MESSAGE);
-
-    // 2. Jika user pilih 'Yes' (Ya)
-    if (confirm == JOptionPane.YES_OPTION) {
-        try {
-            // Panggil Menu Admin (Pastikan nama class-nya benar)
-            // Jika MenuAdmin ada di package lain, NetBeans akan minta Import otomatis
-            new ukk.menu.menuPelapor().setVisible(true); 
-            
-            // Tutup form riwayat yang sekarang
-            this.dispose(); 
-        } catch (Exception e) {
-            // Jaga-jaga kalau ada error saat pindah form
-            JOptionPane.showMessageDialog(this, "Gagal kembali ke menu: " + e.getMessage());
-        }
-    }
+        menuPelapor menuPelapor= new menuPelapor();
+        menuPelapor.setVisible(true);
+        this.setVisible(false);
+        this.dispose();
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void tabel_pengaduanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_pengaduanMouseClicked
-//                                            
-//    int baris = tabel_pengaduan.getSelectedRow();
-//    if (baris == -1) return;
-//
-//    try {
-//        // 1. Mengambil data FOTO dari kolom ke-7 (Sesuaikan urutan kolom database kamu)
-//        Object dataFoto = tabel_pengaduan.getValueAt(baris, 7);
-//        String foto = (dataFoto != null) ? dataFoto.toString() : "";
-//
-//        if (!foto.equals("")) {
-//            // 2. Tentukan lokasi file (Pastikan folder foto sudah benar)
-//            File file = new File("src/img_laporan/" + foto); 
-//            
-//            if (file.exists()) {
-//                ImageIcon icon = new ImageIcon(file.getAbsolutePath());
-//                // 3. Mengatur ukuran gambar agar pas dengan kotak jLabel8 (Preview)
-//                Image img = icon.getImage().getScaledInstance(
-//                        jLabel8.getWidth(), 
-//                        jLabel8.getHeight(), 
-//                        Image.SCALE_SMOOTH);
-//                jLabel8.setIcon(new ImageIcon(img));
-//                jLabel8.setText(""); // Menghapus teks jika gambar ditemukan
-//            } else {
-//                jLabel8.setIcon(null); 
-//                jLabel8.setText("File Tidak Ditemukan");
-//            }
-//        } else {
-//            jLabel8.setIcon(null);
-//            jLabel8.setText("Tidak Ada Foto");
-//        }
-//    } catch (Exception e) {
-//        System.out.println("Error preview foto: " + e.getMessage());
-//        jLabel8.setText("Error Load");
-//    }
-
-        // TODO add your handling code here:
+    // TODO add your handling code here:
     }//GEN-LAST:event_tabel_pengaduanMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
