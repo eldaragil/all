@@ -288,30 +288,103 @@ public class RiwayatWaka1 extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_filterActionPerformed
 
     private void btn_cetak_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cetak_filterActionPerformed
-        // TODO add your handling code here:                                                                                               
-    try {
-        if (tgl_dari.getDate() == null || tgl_sampai.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Pilih tanggal filter dulu sebelum cetak!");
-            return;
-        }
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.HashMap parameter = new java.util.HashMap();
-        
-        parameter.put("tgl_awal", sdf.format(tgl_dari.getDate()));
-        parameter.put("tgl_akhir", sdf.format(tgl_sampai.getDate()));
+         // TODO add your handling code here:                                                                                               
+   try {
+    String cari = txt_cari_nama.getText().trim();
+    String kategori = cb_kategori.getSelectedItem().toString();
 
-        // Lokasi file pastikan huruf besar kecilnya sama dengan di folder project
-        java.io.File reportFile = new java.io.File("src/report/laporan_riwayat.jasper");
-        
-        // PERBAIKAN: Menggunakan ukk.koneksiDB.getKoneksi()
-        java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
-        
-        JasperPrint jp = JasperFillManager.fillReport(reportFile.getPath(), parameter, conn);
-        JasperViewer.viewReport(jp, false);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Cetak Gagal: " + e.getMessage());
+    boolean adaTanggal = (tgl_dari.getDate() != null && tgl_sampai.getDate() != null);
+    boolean adaCari = !cari.isEmpty();
+    boolean adaKategori = !kategori.equalsIgnoreCase("Semua");
+
+    // 🔥 VALIDASI WAJIB FILTER
+    if (!adaTanggal && !adaCari && !adaKategori) {
+        JOptionPane.showMessageDialog(null, "Gunakan minimal 1 filter (Tanggal / Cari / Kategori)!");
+        return;
     }
+
+    // 🔥 QUERY DINAMIS
+    StringBuilder sql = new StringBuilder(
+        "SELECT id_aspirasi AS aspirasi_id_aspirasi, " +
+        "nik AS aspirasi_nik, " +
+        "nama AS aspirasi_nama, " +
+        "isi_aspirasi AS aspirasi_isi_aspirasi, " +
+        "kategori AS aspirasi_kategori, " +
+        "status AS aspirasi_status, " +
+        "tanggal AS aspirasi_tanggal, " +
+        "tanggal_tang AS aspirasi_tanggal_tang " +
+        "FROM aspirasi WHERE status IN ('terimakasih','diterapkan') "
+    );
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    // 🔥 FILTER TANGGAL
+    if (adaTanggal) {
+        sql.append(" AND tanggal BETWEEN ? AND ? ");
+    }
+
+    // 🔥 FILTER NAMA
+    if (adaCari) {
+        sql.append(" AND nama LIKE ? ");
+    }
+
+    // 🔥 FILTER KATEGORI
+    if (adaKategori) {
+        sql.append(" AND kategori = ? ");
+    }
+
+    sql.append(" ORDER BY tanggal ASC ");
+
+    Connection conn = Koneksi.Koneksi.KoneksiDB();
+    PreparedStatement pst = conn.prepareStatement(sql.toString());
+
+    int index = 1;
+
+    // 🔥 SET PARAMETER TANGGAL
+    if (adaTanggal) {
+        pst.setString(index++, sdf.format(tgl_dari.getDate()));
+        pst.setString(index++, sdf.format(tgl_sampai.getDate()));
+    }
+
+    // 🔥 SET PARAMETER NAMA
+    if (adaCari) {
+        pst.setString(index++, "%" + cari + "%");
+    }
+
+    // 🔥 SET PARAMETER KATEGORI
+    if (adaKategori) {
+        pst.setString(index++, kategori);
+    }
+
+    ResultSet rs = pst.executeQuery();
+
+    if (!rs.isBeforeFirst()) {
+        JOptionPane.showMessageDialog(null, "Data tidak ditemukan!");
+        return;
+    }
+
+    JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
+
+    JasperReport jasperReport = JasperCompileManager.compileReport(
+        "D:/buiza/ukk/src/report/aspirasi.jrxml"
+    );
+
+    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
+
+    JRViewer viewer = new JRViewer(jasperPrint);
+    JDialog dialog = new JDialog();
+    dialog.setTitle("Laporan Data Aspirasi");
+    dialog.setAlwaysOnTop(true);
+    dialog.getContentPane().add(viewer);
+
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    dialog.setBounds(0, 0, screenSize.width, screenSize.height);
+    dialog.setVisible(true);
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Gagal Cetak Laporan: " + e.getMessage());
+    e.printStackTrace();
+}
     }//GEN-LAST:event_btn_cetak_filterActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

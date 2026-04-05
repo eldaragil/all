@@ -334,7 +334,7 @@ public class pengaduan extends javax.swing.JFrame {
                 filtterActionPerformed(evt);
             }
         });
-        jPanel1.add(filtter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1690, 230, 130, 50));
+        jPanel1.add(filtter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1700, 240, 130, 50));
 
         jButton4.setBackground(new java.awt.Color(0,0,0,0));
         jButton4.setBorder(null);

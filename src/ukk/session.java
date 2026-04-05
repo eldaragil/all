@@ -104,15 +104,18 @@ public class session {
 
 
 
+   
+
     private static String nik;
     private static String role;
+    private static String username; // 🔥 tambahan
 
     public static String getNik() {
         return nik;
     }
 
     public static void setNik(String nik) {
-        session.nik = nik;   // atau cukup: nik = nik; tapi lebih aman pakai Session.
+        session.nik = nik;
     }
 
     public static String getRole() {
@@ -123,13 +126,21 @@ public class session {
         session.role = role;
     }
 
-    // OPTIONAL: logout
+    // 🔥 tambahan
+    public static String getUsername() {
+        return username;
+    }
+
+    public static void setUsername(String username) {
+        session.username = username;
+    }
+
     public static void clear() {
         nik = null;
         role = null;
+        username = null;
     }
 }
-
 
 
 

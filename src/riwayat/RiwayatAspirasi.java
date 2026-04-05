@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -52,6 +54,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori");
     model.addColumn("Status");
+    model.addColumn("Feedback");
 
    try {
     int no = 1;
@@ -73,7 +76,8 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
             res.getString("nama"),
             res.getString("isi_aspirasi"),
             res.getString("kategori"),
-            res.getString("status")
+            res.getString("status"),
+            res.getString("feedback")
         });
     }
 
@@ -203,7 +207,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 940, 110, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 950, 110, 40));
 
         jButton2.setBackground(new java.awt.Color(0,0,0,0));
         jButton2.setBorder(null);
@@ -259,6 +263,7 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
     model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori"); // Tambahkan ini
     model.addColumn("Status");
+    model.addColumn("Feedback");
 
     try {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -281,7 +286,8 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
                 res.getString("nama"), 
                 res.getString("isi_aspirasi"), 
                 res.getString("kategori"), // Tambahkan ini
-                res.getString("status")
+                res.getString("status"),
+                res.getString("Feedback")
             });
         }
         tb_riwayat.setModel(model);
@@ -414,36 +420,38 @@ public class RiwayatAspirasi extends javax.swing.JFrame {
 
     private void btn_detailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_detailActionPerformed
         // TODO add your handling code here:                                                                                                                              
-    int baris = tb_riwayat.getSelectedRow(); 
-    
-    if (baris != -1) {
-        try {
-            // Index: 0=No, 1=Tanggal, 2=Nama, 3=Isi, 4=Kategori, 5=Status
-            String tgl    = tb_riwayat.getValueAt(baris, 1).toString();
-            String nama   = tb_riwayat.getValueAt(baris, 2).toString();
-            String isi    = tb_riwayat.getValueAt(baris, 3).toString();
-            String ktgri  = tb_riwayat.getValueAt(baris, 4).toString();
-            String status = tb_riwayat.getValueAt(baris, 5).toString();
+   int baris = tb_riwayat.getSelectedRow(); 
 
-            String detail = "DETAIL ASPIRASI (MODE ADMIN)\n"
-                          + "--------------------------------------\n"
-                          + "Tanggal      : " + tgl + "\n"
-                          + "Nama         : " + nama + "\n"
-                          + "Kategori     : " + ktgri + "\n"
-                          + "Status Saat Ini : " + status + "\n"
-                          + "--------------------------------------\n"
-                          + "Isi Aspirasi :\n" + isi + "\n"
-                          + "--------------------------------------";
+if (baris != -1) {
+    try {
+        // Index: 0=No, 1=Tanggal, 2=Nama, 3=Isi, 4=Kategori, 5=Status, 6=Feedback
+        String tgl      = tb_riwayat.getValueAt(baris, 1).toString();
+        String nama     = tb_riwayat.getValueAt(baris, 2).toString();
+        String isi      = tb_riwayat.getValueAt(baris, 3).toString();
+        String ktgri    = tb_riwayat.getValueAt(baris, 4).toString();
+        String status   = tb_riwayat.getValueAt(baris, 5).toString();
+        String feedback = tb_riwayat.getValueAt(baris, 6).toString(); // 🔥 tambahan
 
-            JOptionPane.showMessageDialog(this, detail, "Detail Data", JOptionPane.PLAIN_MESSAGE);
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal mengambil detail: " + e.getMessage());
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Silakan pilih baris tabel terlebih dahulu!");
+        String detail = "DETAIL ASPIRASI\n"
+                      + "--------------------------------------\n"
+                      + "Tanggal : " + tgl + "\n"
+                      + "Nama : " + nama + "\n"
+                      + "Kategori : " + ktgri + "\n"
+                      + "Status Saat Ini : " + status + "\n"
+                      + "--------------------------------------\n"
+                      + "Isi Aspirasi :\n" + isi + "\n"
+                      + "--------------------------------------\n"
+                      + "Feedback :\n" + feedback + "\n" // 🔥 tampilkan feedback
+                      + "--------------------------------------";
+
+        JOptionPane.showMessageDialog(this, detail, "Detail Data", JOptionPane.PLAIN_MESSAGE);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal mengambil detail: " + e.getMessage());
     }
-
+} else {
+    JOptionPane.showMessageDialog(this, "Silakan pilih baris tabel terlebih dahulu!");
+}
     }//GEN-LAST:event_btn_detailActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -521,6 +529,7 @@ try {
     model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori");
     model.addColumn("Status");
+    model.addColumn("Feedback");
 
     try {
         String cari = txt_cari_nama.getText().trim();
@@ -550,7 +559,8 @@ try {
                 res.getString("nama"),
                 res.getString("isi_aspirasi"),
                 res.getString("kategori"),
-                res.getString("status")
+                res.getString("status"),
+                res.getString("feedback")
             });
         }
 
@@ -584,6 +594,7 @@ try {
     model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori");
     model.addColumn("Status");
+    model.addColumn("Feedback");
 
     try {
         String sql = "SELECT * FROM aspirasi WHERE kategori=? AND status IN ('terimakasih','diterapkan') ORDER BY tanggal DESC";
@@ -601,7 +612,8 @@ try {
                 rs.getString("nama"),
                 rs.getString("isi_aspirasi"),
                 rs.getString("kategori"),
-                rs.getString("status")
+                rs.getString("status"),
+                rs.getString("feedback")
             });
         }
 

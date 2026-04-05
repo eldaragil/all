@@ -683,7 +683,6 @@ setTanggalHariIni();
     }
 }
 //  
-  
 private void cariData() {
     DefaultTableModel model = new DefaultTableModel();
     model.addColumn("ID");              
@@ -695,13 +694,12 @@ private void cariData() {
     model.addColumn("Tanggal");         
 
     try {
-        java.sql.Connection conn = Koneksi.Koneksi.KoneksiDB();
+        Connection conn = Koneksi.Koneksi.KoneksiDB();
         String cari = txt_cari.getText();
         String filter = cb_filter.getSelectedItem().toString();
         String sql = "";
         boolean isGeneralSearch = false;
 
-        // Semua query hanya untuk status menunggu dan NIK user login
         if (filter.equals("ID")) {
             sql = "SELECT * FROM aspirasi WHERE id_aspirasi LIKE ? AND status='menunggu' AND nik=?";
         } else if (filter.equals("NIK")) {
@@ -710,34 +708,37 @@ private void cariData() {
             sql = "SELECT * FROM aspirasi WHERE nama LIKE ? AND status='menunggu' AND nik=?";
         } else if (filter.equals("Kategori")) {
             sql = "SELECT * FROM aspirasi WHERE kategori LIKE ? AND status='menunggu' AND nik=?";
+        } else if (filter.equals("Isi")) { // 🔥 TAMBAHAN
+            sql = "SELECT * FROM aspirasi WHERE isi_laporan LIKE ? AND status='menunggu' AND nik=?";
         } else {
-            // Pencarian umum: nama, nik, kategori, tetap status menunggu dan nik login
-            sql = "SELECT * FROM aspirasi WHERE (nama LIKE ? OR nik LIKE ? OR kategori LIKE ?) AND status='menunggu' AND nik=?";
+            // 🔥 PENCARIAN UMUM (DITAMBAH isi_laporan)
+            sql = "SELECT * FROM aspirasi WHERE "
+                + "(nama LIKE ? OR nik LIKE ? OR kategori LIKE ? OR isi_laporan LIKE ?) "
+                + "AND status='menunggu' AND nik=?";
             isGeneralSearch = true;
         }
 
         PreparedStatement pst = conn.prepareStatement(sql);
 
         if (!isGeneralSearch) {
-            // filter spesifik → 2 parameter
-            pst.setString(1, cari + "%");
+            pst.setString(1, "%" + cari + "%");
             pst.setString(2, session.getNik());
         } else {
-            // pencarian umum → 4 parameter
-            pst.setString(1, cari + "%"); // nama
-            pst.setString(2, cari + "%"); // nik
-            pst.setString(3, cari + "%"); // kategori
-            pst.setString(4, session.getNik()); // NIK login
+            pst.setString(1, "%" + cari + "%"); // nama
+            pst.setString(2, "%" + cari + "%"); // nik
+            pst.setString(3, "%" + cari + "%"); // kategori
+            pst.setString(4, "%" + cari + "%"); // isi_laporan 🔥
+            pst.setString(5, session.getNik());
         }
 
         ResultSet res = pst.executeQuery();
 
-        while(res.next()){
+        while (res.next()) {
             model.addRow(new Object[]{
                 res.getString("id_aspirasi"),
                 res.getString("nik"),
                 res.getString("nama"),
-                res.getString("isi_aspirasi"),
+                res.getString("isi_laporan"), // 🔥 pastikan ini sesuai DB
                 res.getString("kategori"),
                 res.getString("status"),
                 res.getString("tanggal")

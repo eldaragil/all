@@ -67,7 +67,8 @@ public class Aspirasi1 extends javax.swing.JFrame {
         btn_simpan = new javax.swing.JButton();
         btn_hapus = new javax.swing.JButton();
         cb_kategori = new javax.swing.JComboBox<>();
-        cb_statusfil = new javax.swing.JComboBox<>();
+        cmb_kategori = new javax.swing.JComboBox<>();
+        txt_feedback = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -150,18 +151,18 @@ public class Aspirasi1 extends javax.swing.JFrame {
                 txt_cariKeyReleased(evt);
             }
         });
-        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 230, 680, 40));
+        jPanel1.add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 230, 580, 40));
 
         cb_filter.setBackground(new java.awt.Color(0,0,0,0));
         cb_filter.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cb_filter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "NIK", "NISN", "Nama", "Kategori" }));
+        cb_filter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NIK/NISN", "Nama" }));
         cb_filter.setBorder(null);
         cb_filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_filterActionPerformed(evt);
             }
         });
-        jPanel1.add(cb_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1560, 230, 100, 40));
+        jPanel1.add(cb_filter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1460, 230, 120, 40));
 
         txt_id.setEditable(false);
         txt_id.setBackground(new java.awt.Color(0,0,0,0));
@@ -176,7 +177,7 @@ public class Aspirasi1 extends javax.swing.JFrame {
                 btn_refreshActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 780, 70, 40));
+        jPanel1.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 910, 80, 40));
 
         btn_simpan.setBackground(new java.awt.Color(0,0,0,0));
         btn_simpan.setBorder(null);
@@ -185,7 +186,7 @@ public class Aspirasi1 extends javax.swing.JFrame {
                 btn_simpanActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 780, 80, 40));
+        jPanel1.add(btn_simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 900, 80, 40));
 
         btn_hapus.setBackground(new java.awt.Color(0,0,0,0));
         btn_hapus.setBorder(null);
@@ -194,7 +195,7 @@ public class Aspirasi1 extends javax.swing.JFrame {
                 btn_hapusActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_hapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 780, 80, 40));
+        jPanel1.add(btn_hapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 910, 80, 40));
 
         cb_kategori.setBackground(new java.awt.Color(0,0,0,0));
         cb_kategori.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -203,19 +204,23 @@ public class Aspirasi1 extends javax.swing.JFrame {
         cb_kategori.setBorder(null);
         jPanel1.add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 490, 390, 50));
 
-        cb_statusfil.setBackground(new java.awt.Color(0,0,0,0));
-        cb_statusfil.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        cb_statusfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terimakasih", "diterapkan" }));
-        cb_statusfil.setBorder(null);
-        cb_statusfil.addActionListener(new java.awt.event.ActionListener() {
+        cmb_kategori.setBackground(new java.awt.Color(0,0,0,0));
+        cmb_kategori.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cmb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hardware PC Lab", "Software & Library", "Jaringan & Internet", "Sarana Ruang Praktik", "Kelistrikan & Kabel" }));
+        cmb_kategori.setBorder(null);
+        cmb_kategori.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cb_statusfilActionPerformed(evt);
+                cmb_kategoriActionPerformed(evt);
             }
         });
-        jPanel1.add(cb_statusfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(1700, 230, 120, 40));
+        jPanel1.add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1630, 230, 180, 40));
+
+        txt_feedback.setBackground(new java.awt.Color(0,0,0,0));
+        txt_feedback.setBorder(null);
+        jPanel1.add(txt_feedback, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 770, 390, 110));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar_new/aspirasi tan.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar revisi/aspirasi tan.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-5, -4, 1920, 1090));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -237,10 +242,11 @@ public class Aspirasi1 extends javax.swing.JFrame {
     }//GEN-LAST:event_cb_filterActionPerformed
 
     private void btn_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_simpanActionPerformed
-        // TODO add your handling code here:                                                                             
+         // TODO add your handling code here:                                                                             
   try {
     String id_aspirasi = txt_id.getText(); 
     String status_baru = cb_status.getSelectedItem().toString();
+    String feedback = txt_feedback.getText().trim(); // ambil feedback dari text field
 
     if (id_aspirasi.equals("")) {
         JOptionPane.showMessageDialog(this, "Pilih data di tabel dahulu!");
@@ -249,24 +255,27 @@ public class Aspirasi1 extends javax.swing.JFrame {
 
     Connection conn = Koneksi.Koneksi.KoneksiDB();
 
+    // 🔥 UPDATE STATUS + TANGGAL + FEEDBACK
     String sqlUpdate = "UPDATE aspirasi "
-                     + "SET status=?, tanggal_tang=CURDATE() "
+                     + "SET status=?, tanggal_tang=CURDATE(), feedback=? "
                      + "WHERE id_aspirasi=?"; 
 
     PreparedStatement pstUp = conn.prepareStatement(sqlUpdate);
-    pstUp.setString(1, status_baru);
-    pstUp.setString(2, id_aspirasi);
+    pstUp.setString(1, status_baru);   // status baru
+    pstUp.setString(2, feedback);      // feedback
+    pstUp.setString(3, id_aspirasi);   // id aspirasi
 
     int hasil = pstUp.executeUpdate();
 
     if (hasil > 0) {
-        JOptionPane.showMessageDialog(null, "Status & tanggal tanggapan berhasil diperbarui!");
-        tampilkan_data();
-        bersih();
+        JOptionPane.showMessageDialog(null, "berhasil menanggapi data!");
+        tampilkan_data(); // refresh tabel
+               // reset form
     }
 
 } catch (Exception e) {
     JOptionPane.showMessageDialog(this, "Gagal Update: " + e.getMessage());
+    e.printStackTrace();
 }
     }//GEN-LAST:event_btn_simpanActionPerformed
 
@@ -326,75 +335,105 @@ public class Aspirasi1 extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_namaActionPerformed
 
     private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
-        // TODO add your handling code here:                                                                                                                                                                                                                        
-    // 1. Bersihkan inputan
+        // Bersihkan form
     txt_id.setText("");           
     txt_nik.setText("");         
-    txt_nama.setText("");         
-    
+    txt_nama.setText("");  
     txt_isi.setText("");          
     cb_status.setSelectedIndex(0); 
-    txt_cari.setText("");         
+    txt_feedback.setText("");
+    txt_cari.setText("");
 
-    // 2. Pengaturan Kunci
-    txt_nik.setEditable(false); // Admin biasanya tidak boleh edit identitas
+    txt_nik.setEditable(false);
     txt_nama.setEditable(false);
     txt_isi.setEditable(false);
-   
-    
-    // Kategori tetap dikunci (false)
-    cb_kategori.setEnabled(false); 
+    cb_kategori.setEnabled(false);
 
-    // 3. Update Tabel (Pastikan kolom kategori ada)
+    // Reset ComboBox kategori
+    cb_kategori.setSelectedIndex(-1); // Semua kategori
+     
+    // Tampilkan semua data status menunggu
     DefaultTableModel model = new DefaultTableModel();
-    model.addColumn("ID"); 
-    model.addColumn("NIK / NISN"); 
+    model.addColumn("ID");
+    model.addColumn("NIK / NISN");
     model.addColumn("Nama");
-    model.addColumn("Isi Aspirasi"); // Sesuaikan urutan dengan tampilkan_data
+    model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori");
     model.addColumn("Tanggal");
     model.addColumn("Status");
-    
 
     try {
-        java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
-        String sql = "SELECT * FROM aspirasi WHERE status='menunggu' ORDER BY id_aspirasi DESC";
+        java.sql.Connection conn = (java.sql.Connection) Koneksi.Koneksi.KoneksiDB();
+        String sql = "SELECT * FROM aspirasi WHERE status='menunggu' ORDER BY tanggal ASC";
         java.sql.ResultSet res = conn.createStatement().executeQuery(sql);
-        
+
         while(res.next()){
-            String vNik = res.getString("nik");
-            //String vNisn = res.getString("nisn");
-            String identitasTampil = res.getString("nik");
-
-
             model.addRow(new Object[]{
                 res.getString("id_aspirasi"),
-                identitasTampil,                   
-                res.getString("nama"),        
+                res.getString("nik"),
+                res.getString("nama"),
                 res.getString("isi_aspirasi"),
-                res.getString("kategori"), // Ambil dari DB
-                res.getString("tanggal"),   
+                res.getString("kategori"),
+                res.getString("tanggal"),
                 res.getString("status")
-                  
             });
         }
+
         tbAspirasi.setModel(model);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Gagal Refresh: " + e.getMessage());
+
+    } catch(Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal Refresh: " + e.getMessage());
+        e.printStackTrace();
     }
 
     }//GEN-LAST:event_btn_refreshActionPerformed
 
     private void txt_cariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cariKeyReleased
-        // TODO add your handling code here:                                  
+         // TODO add your handling code here:                                  
     cariData(); // Memanggil fungsi pencarian setiap tombol keyboard dilepas
     }//GEN-LAST:event_txt_cariKeyReleased
 
-    private void cb_statusfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_statusfilActionPerformed
-        // TODO add your handling code here:
-        filterStatus();
-        
-    }//GEN-LAST:event_cb_statusfilActionPerformed
+    private void cmb_kategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_kategoriActionPerformed
+         // TODO add your handling code here:
+         // Ambil kategori yang dipilih
+    String kategoriTerpilih = cmb_kategori.getSelectedItem().toString();
+
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("ID");
+    model.addColumn("NIK / NISN");
+    model.addColumn("Nama");
+    model.addColumn("Isi Aspirasi");
+    model.addColumn("Kategori");
+    model.addColumn("Tanggal");
+    model.addColumn("Status");
+
+    try {
+        java.sql.Connection conn = (java.sql.Connection) Koneksi.Koneksi.KoneksiDB();
+        String sql = "SELECT * FROM aspirasi WHERE status='menunggu' AND kategori=? ORDER BY tanggal ASC";
+        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, kategoriTerpilih);
+
+        java.sql.ResultSet res = pst.executeQuery();
+        while(res.next()){
+            model.addRow(new Object[]{
+                res.getString("id_aspirasi"),
+                res.getString("nik"),
+                res.getString("nama"),
+                res.getString("isi_aspirasi"),
+                res.getString("kategori"),
+                res.getString("tanggal"),
+                res.getString("status")
+            });
+        }
+
+        tbAspirasi.setModel(model);
+
+    } catch(Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal filter kategori: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    }//GEN-LAST:event_cmb_kategoriActionPerformed
 
     /**
      * @param args the command line arguments
@@ -438,13 +477,14 @@ public class Aspirasi1 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_filter;
     private javax.swing.JComboBox<String> cb_kategori;
     private javax.swing.JComboBox<String> cb_status;
-    private javax.swing.JComboBox<String> cb_statusfil;
+    private javax.swing.JComboBox<String> cmb_kategori;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tbAspirasi;
     private javax.swing.JTextField txt_cari;
+    private javax.swing.JTextField txt_feedback;
     private javax.swing.JTextField txt_id;
     private javax.swing.JTextArea txt_isi;
     private javax.swing.JTextField txt_nama;
@@ -458,7 +498,7 @@ public class Aspirasi1 extends javax.swing.JFrame {
     model.addColumn("Isi Aspirasi");   
     model.addColumn("Kategori");
     model.addColumn("Tanggal"); 
-    model.addColumn("Status");         
+    model.addColumn("Status");     
 
     try {
         java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
@@ -488,204 +528,61 @@ public class Aspirasi1 extends javax.swing.JFrame {
  private void cariData() {
     DefaultTableModel model = new DefaultTableModel();
     // 1. Tata letak kolom konsisten
-    model.addColumn("ID");              // 0
-    model.addColumn("NIK / NISN");      // 1
-    model.addColumn("Nama");            // 2
-    model.addColumn("Isi Aspirasi");    // 3
-    model.addColumn("Kategori");        // 4
-    model.addColumn("Tanggal");         // 5
-    model.addColumn("Status");          // 6
-    
+    model.addColumn("ID");              
+    model.addColumn("NIK / NISN");      
+    model.addColumn("Nama");            
+    model.addColumn("Isi Aspirasi");    
+    model.addColumn("Kategori");        
+    model.addColumn("Tanggal");         
+    model.addColumn("Status");              
 
     try {
-        java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
-        String cari = txt_cari.getText();
+        java.sql.Connection conn = (java.sql.Connection) Koneksi.Koneksi.KoneksiDB();
+        String cari = txt_cari.getText().trim();
         String filter = cb_filter.getSelectedItem().toString();
         String sql = "";
 
-        // 2. Logika Query SQL (Tetap sama)
-        if (filter.equals("ID")) {
-            sql = "SELECT * FROM aspirasi WHERE id_aspirasi LIKE ?";
-        } else if (filter.equals("NIK")) {
-            sql = "SELECT * FROM aspirasi WHERE nik LIKE ?";
+        // Hanya NIK dan Nama, status = 'menunggu'
+        if (filter.equals("NIK")) {
+            sql = "SELECT * FROM aspirasi WHERE status='menunggu' AND nik LIKE ? ORDER BY tanggal ASC";
         } else if (filter.equals("Nama")) {
-            sql = "SELECT * FROM aspirasi WHERE nama LIKE ?"; 
-        } else if (filter.equals("Kategori")) {
-            sql = "SELECT * FROM aspirasi WHERE kategori LIKE ?";
+            sql = "SELECT * FROM aspirasi WHERE status='menunggu' AND nama LIKE ? ORDER BY tanggal ASC";
         } else {
-            // Pencarian Umum (Semua kolom dicari dari depan)
-            sql = "String sql = \"SELECT * FROM aspirasi WHERE status='menunggu' AND nama LIKE ?\"; ?";
+            // Default: cari di NIK dan Nama sekaligus
+            sql = "SELECT * FROM aspirasi WHERE status='menunggu' AND (nik LIKE ? OR nama LIKE ?) ORDER BY tanggal ASC";
         }
-        
+
         java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-        
-        // 3. SEMUA menerapkan pencarian dari DEPAN (Tanpa tanda % di awal)
-        if (filter.equals("Nama") || filter.equals("ID") || filter.equals("NIK") || filter.equals("Kategori")) {
-            pst.setString(1, cari + "%"); 
+
+        if (filter.equals("NIK") || filter.equals("Nama")) {
+            pst.setString(1, cari + "%");
         } else {
-            // Untuk pencarian "Semua" - semua parameter diset cari + "%"
-            pst.setString(1, cari + "%"); // nama
-            pst.setString(2, cari + "%"); // nik
-           // pst.setString(3, cari + "%"); // nisn
-            pst.setString(3, cari + "%"); // kategori
+            pst.setString(1, cari + "%");
+            pst.setString(2, cari + "%");
         }
 
         java.sql.ResultSet res = pst.executeQuery();
-        
-        while(res.next()){
-            String vNik = res.getString("nik");
-           // String vNisn = res.getString("nisn");
-           String identitasTampil = res.getString("nik");
 
-
-            model.addRow(new Object[]{
-                res.getString("id_aspirasi"),
-                identitasTampil,
-                res.getString("nama"),
-                res.getString("isi_aspirasi"),
-                res.getString("kategori"), // Tetap rapi di index 4
-                res.getString("tanggal"),
-                res.getString("status")
-            });
-        }
-        tbAspirasi.setModel(model);
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Gagal Mencari: " + e.getMessage());
-    }
-}
-
-
- 
-private void filterStatus() {
-    DefaultTableModel model = new DefaultTableModel();
-    model.addColumn("ID");
-    model.addColumn("NIK / NISN");
-    model.addColumn("Nama");
-    model.addColumn("Isi Aspirasi");
-    model.addColumn("Kategori");
-    model.addColumn("Tanggal");
-    model.addColumn("Status");
-    
-
-   // .trim() akan menghapus spasi di depan atau di belakang teks
-String statusPilihan = cb_statusfil.getSelectedItem().toString().trim(); 
-
-try {
-    java.sql.Connection conn = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
-    
-    // Gunakan query ini agar lebih aman dari spasi tersembunyi
-    String sql = "SELECT * FROM aspirasi WHERE status = ? ORDER BY tanggal DESC";
-    java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-    pst.setString(1, statusPilihan); 
-    
-    java.sql.ResultSet res = pst.executeQuery();
-   
-        
-        boolean dataDitemukan = false;
-        while(res.next()){
-            dataDitemukan = true;
-            String vNik = res.getString("nik");
-          //  String vNisn = res.getString("nisn");
+        while (res.next()) {
             String identitasTampil = res.getString("nik");
 
-
             model.addRow(new Object[]{
                 res.getString("id_aspirasi"),
                 identitasTampil,
                 res.getString("nama"),
                 res.getString("isi_aspirasi"),
-                res.getString("kategori"), 
+                res.getString("kategori"),
                 res.getString("tanggal"),
                 res.getString("status")
-                
             });
         }
+
         tbAspirasi.setModel(model);
 
-        if (!dataDitemukan) {
-            System.out.println("Data dengan status " + statusPilihan + " tidak ditemukan di DB.");
-        }
-        
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Gagal menyaring status: " + e.getMessage());
-    }
-}
-   
-    public void cetakStruk(String idAspirasi) {
-    // Tambahkan WHERE id_aspirasi = ? di akhir query
-    String sql = "SELECT\n" +
-"     aspirasi.`id_aspirasi` AS aspirasi_id_aspirasi,\n" +
-"     aspirasi.`nik` AS aspirasi_nik,\n" +
-"     aspirasi.`nama` AS aspirasi_nama,\n" +
-"     aspirasi.`isi_aspirasi` AS aspirasi_isi_aspirasi,\n" +
-"     aspirasi.`status` AS aspirasi_status,\n" +
-"     aspirasi.`tanggal` AS aspirasi_tanggal\n" + // Baris feedback/tanggapan dihapus
-"FROM\n" +
-"     `aspirasi` aspirasi\n" +
-"WHERE aspirasi.`id_aspirasi` = ?";
-    
-    Connection connection = null;
-    PreparedStatement pst = null;
-    ResultSet rp = null;
-    
-    try {
-        // Gunakan koneksi yang sudah kamu buat agar konsisten
-        connection = (java.sql.Connection)Koneksi.Koneksi.KoneksiDB();
-        
-        pst = connection.prepareStatement(sql, 
-        ResultSet.TYPE_SCROLL_INSENSITIVE, 
-        ResultSet.CONCUR_READ_ONLY);
-        pst.setString(1, idAspirasi); // Memasukkan ID ke tanda tanya (?)
-        rp = pst.executeQuery();
-        
-        if (rp.next()) { // Cek apakah data ada
-            // Reset ResultSet ke awal sebelum dikirim ke Jasper
-            rp.beforeFirst(); 
-            
-            JRResultSetDataSource jrRS = new JRResultSetDataSource(rp);
-            // Pastikan path file .jrxml benar
-            JasperReport jasperReport = JasperCompileManager.compileReport("G:\\UKKAspirasi\\src\\ReportUKK\\laporan_id.jrxml");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrRS);
-            
-            JRViewer aViewer = new JRViewer(jasperPrint);
-            JDialog viewer = new JDialog();
-            viewer.setTitle("Laporan Aspirasi");
-            viewer.setAlwaysOnTop(true);
-            viewer.getContentPane().add(aViewer);
-            
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            viewer.setBounds(0, 0, screenSize.width, screenSize.height);
-            viewer.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Data tidak ditemukan di database.");
-        }
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error Cetak: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Gagal Mencari: " + e.getMessage());
         e.printStackTrace();
-    } finally {
-        // Resource closing ditangani agar tidak bocor memory
-        try { if (rp != null) rp.close(); } catch (Exception e) {}
-        try { if (pst != null) pst.close(); } catch (Exception e) {}
     }
-}
 
-   private void bersih() {
-    txt_id.setText("");           
-    txt_nik.setText("");         
-    txt_nama.setText("");         
-   
-    txt_isi.setText("");          
-    cb_status.setSelectedIndex(0); 
-    
-    // Kunci field teks agar tidak bisa diketik
-    txt_id.setEditable(false);
-    txt_nik.setEditable(false);
-    txt_nama.setEditable(false);
-    txt_isi.setEditable(false);
-   
-}
-
-
+    }
 }

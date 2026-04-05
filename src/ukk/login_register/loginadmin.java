@@ -124,6 +124,8 @@ if (usernameTxt.getText().isEmpty() || passwordTxt.getText().isEmpty()) {
         rs = pst.executeQuery();
 
         if (rs.next()) {
+            
+            session.setUsername(rs.getString("username"));
 
             String roleDB = rs.getString("role");
 

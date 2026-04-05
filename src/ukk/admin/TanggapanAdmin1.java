@@ -41,7 +41,7 @@ import ukk.session;
  *
  * @author asus
  */
-public class TanggapanAdmin extends javax.swing.JFrame {
+public class TanggapanAdmin1 extends javax.swing.JFrame {
 
     Connection conn = null;
     ResultSet rs = null;
@@ -51,12 +51,13 @@ public class TanggapanAdmin extends javax.swing.JFrame {
     /**
      * Creates new form TanggapanAdmin
      */
-    public TanggapanAdmin() {
+    public TanggapanAdmin1() {
         initComponents();
         conn = Koneksi.KoneksiDB();
         tampil_tabel();
         setTanggalHariIni();
         tabel_pengaduan.requestFocus();
+        getDataTanggapan();
         txt_username.setText(session.getUsername());
         this.setLocationRelativeTo(null);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
@@ -64,12 +65,44 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         
     }
     
-  
+   public void getDataTanggapan() {
+    DefaultTableModel model = (DefaultTableModel) tabel_feedback.getModel();
+    model.setRowCount(0);
+    try {
+        // Ganti INNER JOIN menjadi LEFT JOIN agar data tanggapan tidak hilang
+        String sql = "SELECT t.*, p.username FROM tanggapan t "
+           + "LEFT JOIN petugas p ON t.id_petugas = p.id_petugas "
+           + "ORDER BY t.id_tanggapan DESC"; // Menampilkan data terbaru di atas
+        
+        pst = conn.prepareStatement(sql);
+        rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            // Ambil username, jika null (tidak ketemu) ganti dengan "-"
+            String namaPetugas = rs.getString("username");
+            if (namaPetugas == null) {
+                namaPetugas = "-";
+            }
+
+            model.addRow(new Object[]{
+                rs.getString("id_tanggapan"),
+                rs.getString("nik"),
+                rs.getString("nama"),
+                rs.getString("tgl_tang"),
+                rs.getString("feedback"),
+                rs.getString("status"),
+                namaPetugas // Kolom nama petugas dari hasil JOIN
+            });
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal memuat tabel bawah: " + e.getMessage());
+    }
+    }
     
     private void setTanggalHariIni() {
-//    txt_tgl.setDate(new Date());
-//    txt_tgl.getDateEditor().setEnabled(false);
-//    txt_tgl.getCalendarButton().setEnabled(false);
+    txt_tgl.setDate(new Date());
+    txt_tgl.getDateEditor().setEnabled(false);
+    txt_tgl.getCalendarButton().setEnabled(false);
     
     txt_tglpengaduan.setDate(new Date());
     txt_tglpengaduan.getDateEditor().setEnabled(false);
@@ -80,14 +113,14 @@ public class TanggapanAdmin extends javax.swing.JFrame {
     private void bersih() {
     txt_id.setText("");
     txt_NIK.setText("");
-   // txt_nama.setText("");
+    txt_nama.setText("");
     txt_username.setText("");
     txt_nama_petugas.setText("");
     lokasi.setText("");
     txt_pengaduan.setText("");
     txt_tanggapan.setText("");
     cmb_status.setSelectedIndex(0);
-  //  txt_tgl.setDate(null); 
+    txt_tgl.setDate(null); 
     lbl_foto.setIcon(null);
 //    lbl_foto.setIcon(null);
   //  lbl_foto.setText(""); 
@@ -103,6 +136,8 @@ public class TanggapanAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         txt_NIK = new javax.swing.JTextField();
+        txt_nama = new javax.swing.JTextField();
+        txt_tgl = new com.toedter.calendar.JDateChooser();
         cmb_status = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -112,12 +147,15 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabel_pengaduan = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
+        txt_id = new javax.swing.JTextField();
         btn_refrest = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_pengaduan = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         txt_tanggapan = new javax.swing.JTextArea();
         detail = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tabel_feedback = new javax.swing.JTable();
         lbl_foto = new javax.swing.JLabel();
         txt_tglpengaduan = new com.toedter.calendar.JDateChooser();
         cb_kategori = new javax.swing.JComboBox<>();
@@ -125,7 +163,6 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         txt_username = new javax.swing.JTextField();
         btn_cek_petugas = new javax.swing.JButton();
         txt_nama_petugas = new javax.swing.JTextField();
-        txt_id = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -134,17 +171,30 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         txt_NIK.setBackground(new java.awt.Color(0,0,0,0));
         txt_NIK.setBorder(null);
         txt_NIK.setEnabled(false);
-        getContentPane().add(txt_NIK, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 390, 40));
+        getContentPane().add(txt_NIK, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 390, 40));
+
+        txt_nama.setBackground(new java.awt.Color(0,0,0,0));
+        txt_nama.setBorder(null);
+        txt_nama.setEnabled(false);
+        txt_nama.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_namaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txt_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 390, 30));
+
+        txt_tgl.setEnabled(false);
+        getContentPane().add(txt_tgl, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 200, 390, 40));
 
         cmb_status.setBackground(new java.awt.Color(0,0,0,0));
-        cmb_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "tertanggapi" }));
+        cmb_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terverifikasi", "tertanggapi" }));
         cmb_status.setBorder(null);
         cmb_status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_statusActionPerformed(evt);
             }
         });
-        getContentPane().add(cmb_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 570, 390, 40));
+        getContentPane().add(cmb_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 620, 390, 40));
 
         jButton1.setBackground(new java.awt.Color(0,0,0,0));
         jButton1.setBorder(null);
@@ -153,7 +203,7 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 910, 70, 40));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 950, 70, 40));
 
         jButton3.setBackground(new java.awt.Color(0,0,0,0));
         jButton3.setBorder(null);
@@ -162,7 +212,7 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 910, 80, 40));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 950, 80, 40));
 
         txt_cari.setBackground(new java.awt.Color(0,0,0,0));
         txt_cari.setBorder(null);
@@ -171,11 +221,11 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 txt_cariActionPerformed(evt);
             }
         });
-        getContentPane().add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 170, 640, 50));
+        getContentPane().add(txt_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 40, 710, 40));
 
         cmb_kategori.setBackground(new java.awt.Color(0,0,0,0));
         cmb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NIK", "Nama" }));
-        getContentPane().add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1530, 170, 130, 50));
+        getContentPane().add(cmb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(1610, 40, 140, 40));
 
         btn_cari.setBackground(new java.awt.Color(0,0,0,0));
         btn_cari.setBorder(null);
@@ -184,7 +234,7 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 btn_cariActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(1690, 170, 160, 50));
+        getContentPane().add(btn_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(1780, 40, 110, 50));
 
         tabel_pengaduan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -212,10 +262,16 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabel_pengaduan);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 270, 940, 360));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 160, 940, 360));
 
         jLabel3.setText("NIK");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(487, 107, -1, -1));
+
+        txt_id.setBackground(new java.awt.Color(0,0,0,0));
+        txt_id.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txt_id.setBorder(null);
+        txt_id.setEnabled(false);
+        getContentPane().add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 390, 40));
 
         btn_refrest.setBackground(new java.awt.Color(0,0,0,0));
         btn_refrest.setBorder(null);
@@ -224,7 +280,7 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 btn_refrestActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_refrest, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 910, 70, 30));
+        getContentPane().add(btn_refrest, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 950, 70, 30));
 
         txt_pengaduan.setBackground(new java.awt.Color(0,0,0,0));
         txt_pengaduan.setColumns(20);
@@ -232,7 +288,7 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         txt_pengaduan.setEnabled(false);
         jScrollPane2.setViewportView(txt_pengaduan);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 390, 100));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 400, 390, 100));
 
         txt_tanggapan.setBackground(new java.awt.Color(0,0,0,0));
         txt_tanggapan.setColumns(20);
@@ -240,7 +296,7 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         txt_tanggapan.setBorder(null);
         jScrollPane3.setViewportView(txt_tanggapan);
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 630, 380, 100));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 680, 380, 110));
 
         detail.setBackground(new java.awt.Color(0,0,0,0));
         detail.setBorder(null);
@@ -249,16 +305,44 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 detailActionPerformed(evt);
             }
         });
-        getContentPane().add(detail, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 910, 70, 40));
+        getContentPane().add(detail, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 950, 70, 40));
+
+        tabel_feedback.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "NIK/NISN", "Nama", "Tanggal", "Feedback", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabel_feedback.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabel_feedbackMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tabel_feedback);
+
+        getContentPane().add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 580, 940, 340));
 
         lbl_foto.setBackground(new java.awt.Color(0,0,0,0));
-        getContentPane().add(lbl_foto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 750, 110, 140));
-        getContentPane().add(txt_tglpengaduan, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 200, 390, 30));
+        getContentPane().add(lbl_foto, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 810, 90, 130));
+        getContentPane().add(txt_tglpengaduan, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 390, 40));
 
         cb_kategori.setBackground(new java.awt.Color(0,0,0,0));
         cb_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "sarana", "prasarana" }));
         cb_kategori.setBorder(null);
-        getContentPane().add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 460, 390, 40));
+        getContentPane().add(cb_kategori, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 520, 390, 30));
 
         lokasi.setBackground(new java.awt.Color(0,0,0,0));
         lokasi.setBorder(null);
@@ -267,11 +351,11 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 lokasiActionPerformed(evt);
             }
         });
-        getContentPane().add(lokasi, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 520, 390, 30));
+        getContentPane().add(lokasi, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 570, 390, 30));
 
         txt_username.setBackground(new java.awt.Color(0,0,0,0));
         txt_username.setBorder(null);
-        getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 380, 40));
+        getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, 380, 40));
 
         btn_cek_petugas.setBackground(new java.awt.Color(0,0,0,0));
         btn_cek_petugas.setBorder(null);
@@ -280,14 +364,13 @@ public class TanggapanAdmin extends javax.swing.JFrame {
                 btn_cek_petugasActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_cek_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 250, 70, 40));
+        getContentPane().add(btn_cek_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 300, 70, 40));
 
         txt_nama_petugas.setBackground(new java.awt.Color(0,0,0,0));
         txt_nama_petugas.setEnabled(false);
-        getContentPane().add(txt_nama_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, 380, 40));
-        getContentPane().add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 390, 40));
+        getContentPane().add(txt_nama_petugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 380, 40));
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar revisi/FROM RIWAYAT PENGADUAN.png"))); // NOI18N
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar_new/PELAPOR PENGADUAN (1).png"))); // NOI18N
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         pack();
@@ -344,10 +427,64 @@ public class TanggapanAdmin extends javax.swing.JFrame {
         System.out.println("Error tampil data: " + e.getMessage());
     }
 }   
+    
+    
+    //tampil table tanggapan
+    public void tampil_tabel1() {
+    DefaultTableModel model = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
+    model.addColumn("ID");
+    model.addColumn("ID_Pengaduan");
+    model.addColumn("NIK/NISN");
+    model.addColumn("Nama");
+    model.addColumn("Tanggal");
+    model.addColumn("Pengaduan");
+    model.addColumn("Kategori");
+    model.addColumn("Foto");
+    model.addColumn("Status");
+
+    try {
+        String sql = "SELECT id_pengaduan, nik, nama, tgl_pengaduan, isi_laporan, kategori, foto, status "
+                   + "FROM pengaduan "
+                   + "WHERE status = 'Tertanggapi'";
+
+        java.sql.Connection conn = k.KoneksiDB();
+        java.sql.Statement stm = conn.createStatement();
+        java.sql.ResultSet res = stm.executeQuery(sql);
+
+        while (res.next()) {
+            model.addRow(new Object[]{
+                res.getString("id_tanggapan"),
+                res.getString("id_pengaduan"),
+                res.getString("nik"),
+                res.getString("nama"),
+                res.getString("tgl_pengaduan"),
+                res.getString("isi_laporan"),
+                res.getString("kategori"),
+                res.getString("foto"),
+                res.getString("status")
+            });
+        }
+
+        tabel_feedback.setModel(model);
+
+    } catch (Exception e) {
+        System.out.println("Error tampil data: " + e.getMessage());
+    }
+}
 
     private void txt_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_cariActionPerformed
+
+    private void txt_namaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_namaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_namaActionPerformed
 
     private void cmb_statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_statusActionPerformed
         // TODO add your handling code here:
@@ -367,56 +504,70 @@ public class TanggapanAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-if (txt_id.getText().isEmpty() || txt_tanggapan.getText().isEmpty()
-    || txt_username.getText().isEmpty() || txt_nama_petugas.getText().isEmpty()
-    || txt_tglpengaduan.getDate() == null) {
+ // 1. Validasi Input: Pastikan ID dan Tanggapan (feedback) tidak kosong
+// 1. Validasi Input Tetap Sama
+if (txt_id.getText().isEmpty() || txt_NIK.getText().isEmpty() || 
+        txt_nama.getText().isEmpty() || txt_pengaduan.getText().isEmpty() || 
+        txt_tanggapan.getText().isEmpty() || txt_username.getText().isEmpty()) {
+        
+        JOptionPane.showMessageDialog(null, "Semua kolom termasuk ID Petugas wajib diisi!");
+        return;
+    }
 
-    JOptionPane.showMessageDialog(null, "Data wajib diisi!");
-    return;
-}
+    try {
+        // 2. PENGATURAN TANGGAL: Mengambil data dari JDateChooser
+        String format = "yyyy-MM-dd";
+        SimpleDateFormat fm = new SimpleDateFormat(format);
+        String tanggalPengaduan = fm.format(txt_tgl.getDate());
+        String tanggalTanggapan = fm.format(txt_tglpengaduan.getDate());
+        
+        // 3. AMBIL DATA DARI KOMPONEN GUI
+        String statusTerpilih = cmb_status.getSelectedItem().toString();
+        Connection conn = k.KoneksiDB();
 
-try {
-    Connection conn = Koneksi.KoneksiDB();
+        // 4. BAGIAN 1: SIMPAN KE TABEL TANGGAPAN (DATABASE ukk_net)
+        String sqlSimpan = "INSERT INTO tanggapan "
+                + "(id_pengaduan, nik, nama, tanggal, tgl_tang, "
+                + "isi_pengaduan, kategori, lokasi, status, feedback, foto, id_petugas, nama_petugas) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
-    String tgl_tanggapan = fm.format(txt_tglpengaduan.getDate());
+        PreparedStatement pst = conn.prepareStatement(sqlSimpan);
+        pst.setString(1, txt_id.getText());
+        pst.setString(2, txt_NIK.getText());
+        pst.setString(3, txt_nama.getText());
+        pst.setString(4, tanggalPengaduan);
+        pst.setString(5, tanggalTanggapan);
+        pst.setString(6, txt_pengaduan.getText());
+        pst.setString(7, cb_kategori.getSelectedItem().toString());
+        pst.setString(8, lokasi.getText());
+        pst.setString(9, statusTerpilih);
+        pst.setString(10, txt_tanggapan.getText());
+        pst.setString(11, (pathFoto == null) ? "" : pathFoto);
+        
+        // Menggunakan setString agar tidak error tipe data saat mengambil dari JTextField
+        pst.setString(12, txt_username.getText()); 
+        pst.setString(13, txt_nama_petugas.getText()); 
 
-    String status = cmb_status.getSelectedItem().toString();
+        pst.executeUpdate(); // Eksekusi simpan pertama
 
-    // 🔥 INSERT SESUAI STRUKTUR ASLI DB
-    String sql = "INSERT INTO tanggapan "
-            + "(id_pengaduan, nik, nama, isi_pengaduan, kategori, lokasi, status, feedback, tanggal, tgl_tang, id_petugas, nama_petugas, foto) "
-            + "SELECT id_pengaduan, nik, nama, isi_laporan, kategori, lokasi, ?, ?, DATE(tgl_pengaduan), ?, ?, ?, foto "
-            + "FROM pengaduan WHERE id_pengaduan=?";
+        // 5. BAGIAN 2: UPDATE OTOMATIS STATUS DI TABEL PENGADUAN
+        String sqlUpdateStatus = "UPDATE pengaduan SET status = ? WHERE id_pengaduan = ?";
+        PreparedStatement pstUpdate = conn.prepareStatement(sqlUpdateStatus);
+        pstUpdate.setString(1, statusTerpilih);
+        pstUpdate.setString(2, txt_id.getText()); 
+        pstUpdate.executeUpdate(); // Eksekusi update kedua
 
-    PreparedStatement pst = conn.prepareStatement(sql);
+        // 6. BAGIAN 3: PENYELESAIAN DAN REFRESH DATA
+        JOptionPane.showMessageDialog(null, "Tanggapan berhasil disimpan dan status diperbarui!");
 
-    pst.setString(1, status);
-    pst.setString(2, txt_tanggapan.getText());
-    pst.setString(3, tgl_tanggapan);
-    pst.setString(4, txt_username.getText());
-    pst.setString(5, txt_nama_petugas.getText());
-    pst.setString(6, txt_id.getText());
+        tampil_tabel();       // Refresh tabel daftar pengaduan (atas)
+        getDataTanggapan();   // Refresh tabel riwayat tanggapan (bawah)
+        bersih();             // Kosongkan form input agar siap dipakai lagi
 
-    pst.executeUpdate();
-
-    // 🔥 UPDATE STATUS PENGADUAN
-    String update = "UPDATE pengaduan SET status=? WHERE id_pengaduan=?";
-    PreparedStatement pst2 = conn.prepareStatement(update);
-
-    pst2.setString(1, status);
-    pst2.setString(2, txt_id.getText());
-
-    pst2.executeUpdate();
-
-    JOptionPane.showMessageDialog(null, "Tanggapan berhasil disimpan!");
-
-    tampil_tabel();
-    bersih();
-
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-}
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error Simpan: " + e.getMessage());
+        e.printStackTrace();
+    }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -477,6 +628,7 @@ try {
     }//GEN-LAST:event_btn_cariActionPerformed
 
     private void tabel_pengaduanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_pengaduanMouseClicked
+    tabel_feedback.clearSelection();                                            
     int baris = tabel_pengaduan.getSelectedRow();
     if (baris == -1) return;
 
@@ -485,21 +637,21 @@ try {
         // ================= FIELD TEXT =================
         txt_id.setText(tabel_pengaduan.getValueAt(baris, 0).toString());
         txt_NIK.setText(tabel_pengaduan.getValueAt(baris, 1).toString());
-       // txt_nama.setText(tabel_pengaduan.getValueAt(baris, 2).toString());
+        txt_nama.setText(tabel_pengaduan.getValueAt(baris, 2).toString());
         txt_pengaduan.setText(tabel_pengaduan.getValueAt(baris, 4).toString());
         lokasi.setText(tabel_pengaduan.getValueAt(baris, 6).toString());
 
         // ================= TANGGAL =================
         String tanggal = tabel_pengaduan.getValueAt(baris, 3).toString();
         java.util.Date date = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(tanggal);
-       // txt_tgl.setDate(date);
+        txt_tgl.setDate(date);
         
         // ================= STATUS =================
         String kategori = tabel_pengaduan.getValueAt(baris, 5).toString();
         cb_kategori.setSelectedItem(kategori);
         // ================= STATUS =================
-//        String status = tabel_pengaduan.getValueAt(baris, 8).toString();
-//        cmb_status.setSelectedItem(status);
+        String status = tabel_pengaduan.getValueAt(baris, 8).toString();
+        cmb_status.setSelectedItem(status);
 
         // ================= FOTO =================
         String foto = tabel_pengaduan.getValueAt(baris, 7).toString();
@@ -537,71 +689,192 @@ try {
     txt_cari.setText(""); 
     tampil_tabel();
     txt_username.setText("");
+    getDataTanggapan();
     bersih();   
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_refrestActionPerformed
 
     private void detailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailActionPerformed
-   int row = tabel_pengaduan.getSelectedRow();
+    int rowAtas = tabel_pengaduan.getSelectedRow();
+    int rowBawah = tabel_feedback.getSelectedRow();
 
-if (row == -1) {
-    JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!");
-    return;
-}
+    if (rowAtas == -1 && rowBawah == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih data dari salah satu tabel terlebih dahulu!");
+        return;
+    }
 
-// Ambil data dari tabel
-String id   = tabel_pengaduan.getValueAt(row, 0).toString();
-String nik  = tabel_pengaduan.getValueAt(row, 1).toString();
-String nama = tabel_pengaduan.getValueAt(row, 2).toString();
-String tgl  = tabel_pengaduan.getValueAt(row, 3).toString();
-String isi  = tabel_pengaduan.getValueAt(row, 4).toString();
-String kat  = tabel_pengaduan.getValueAt(row, 5).toString();
-String lok  = tabel_pengaduan.getValueAt(row, 6).toString();
-String foto = tabel_pengaduan.getValueAt(row, 7).toString();
-String stat = tabel_pengaduan.getValueAt(row, 8).toString();
+    // Inisialisasi variabel
+    String id="", nik="", nama="", tgl="", isi="", kat="", lok="", foto="", stat="", feedback="", petugas="";
+    String teksTampilan = "";
 
-// Teks tampilan
-String teksTampilan = 
-    "ID           : " + id + "\n" +
-    "NIK/NISN     : " + nik + "\n" +
-    "Nama Pelapor : " + nama + "\n" +
-    "Tanggal      : " + tgl + "\n" +
-    "Kategori     : " + kat + "\n" +
-    "Lokasi       : " + lok + "\n" +
-    "Status       : " + stat + "\n\n" +
-    "Isi Laporan  :\n" + isi;
-
-// --- PANEL TAMPILAN ---
-JPanel panel = new JPanel(new BorderLayout(10, 10));
-
-JTextArea txt = new JTextArea(teksTampilan);
-txt.setEditable(false);
-txt.setLineWrap(true);
-txt.setWrapStyleWord(true);
-txt.setFont(new java.awt.Font("Monospaced", 0, 12));
-
-JScrollPane scroll = new JScrollPane(txt);
-scroll.setPreferredSize(new Dimension(450, 400));
-panel.add(scroll, BorderLayout.CENTER);
-
-// --- FOTO ---
-if (foto != null && !foto.isEmpty() && !foto.equals("-")) {
     try {
-        JLabel lblFoto = new JLabel();
-        ImageIcon icon = new ImageIcon(foto);
-        Image img = icon.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
-        lblFoto.setIcon(new ImageIcon(img));
-        panel.add(lblFoto, BorderLayout.EAST);
-    } catch (Exception e) {}
-}
+        java.sql.Connection conn = Koneksi.KoneksiDB(); //
 
-// --- TAMPILKAN ---
-JOptionPane.showMessageDialog(this, panel, "Detail Pengaduan", JOptionPane.INFORMATION_MESSAGE);
+        if (rowAtas != -1) {
+            // --- TABEL ATAS (PENGADUAN) ---
+            id   = tabel_pengaduan.getValueAt(rowAtas, 0).toString();
+            nik  = tabel_pengaduan.getValueAt(rowAtas, 1).toString();
+            nama = tabel_pengaduan.getValueAt(rowAtas, 2).toString();
+            tgl  = tabel_pengaduan.getValueAt(rowAtas, 3).toString();
+            isi  = tabel_pengaduan.getValueAt(rowAtas, 4).toString(); // Kolom Pengaduan
+            kat  = tabel_pengaduan.getValueAt(rowAtas, 5).toString(); // Kolom Kategori
+            lok  = tabel_pengaduan.getValueAt(rowAtas, 6).toString(); // Kolom Lokasi
+            foto = tabel_pengaduan.getValueAt(rowAtas, 7).toString(); // Kolom Foto
+            stat = tabel_pengaduan.getValueAt(rowAtas, 8).toString(); // Kolom Status
 
-// Clear selection
-tabel_pengaduan.clearSelection();
+            teksTampilan = 
+                "ID           : " + id + "\n" +
+                "NIK/NISN     : " + nik + "\n" +
+                "Nama Pelapor : " + nama + "\n" +
+                "Tanggal      : " + tgl + "\n" +
+                "Kategori     : " + kat + "\n" +
+                "Lokasi       : " + lok + "\n" +
+                "Status       : " + stat + "\n\n" +
+                "Isi Laporan  :\n" + isi;
+
+        } else {
+            // --- TABEL BAWAH (TANGGAPAN) ---
+            id       = tabel_feedback.getValueAt(rowBawah, 0).toString();
+            nik      = tabel_feedback.getValueAt(rowBawah, 1).toString();
+            nama     = tabel_feedback.getValueAt(rowBawah, 2).toString();
+            tgl      = tabel_feedback.getValueAt(rowBawah, 3).toString();
+            feedback = tabel_feedback.getValueAt(rowBawah, 4).toString();
+            stat     = tabel_feedback.getValueAt(rowBawah, 5).toString();
+            
+            // Query ambil Username, Foto, Kategori, Lokasi, dan Isi dari DB
+            String sql = "SELECT p.username, peng.foto, peng.isi_laporan, peng.kategori, peng.lokasi "
+                       + "FROM tanggapan t "
+                       + "JOIN petugas p ON t.id_petugas = p.id_petugas "
+                       + "JOIN pengaduan peng ON t.id_pengaduan = peng.id_pengaduan "
+                       + "WHERE t.id_tanggapan = '" + id + "'";
+            
+            java.sql.Statement st = conn.createStatement();
+            java.sql.ResultSet rs = st.executeQuery(sql);
+            
+            if (rs.next()) {
+                petugas = rs.getString("username"); //
+                foto    = rs.getString("foto");     
+                isi     = rs.getString("isi_laporan");
+                kat     = rs.getString("kategori");
+                lok     = rs.getString("lokasi");
+            }
+
+            teksTampilan = 
+                "ID           : " + id + "\n" +
+                "NIK/NISN     : " + nik + "\n" +
+                "Nama Pelapor : " + nama + "\n" +
+                "Nama Petugas : " + petugas + "\n" +
+                "Tanggal      : " + tgl + "\n" +
+                "Status       : " + stat + "\n\n" +
+                "Isi Laporan Asli :\n" + isi +"\n\n" +
+                "Feedback/Tanggapan :\n" + feedback;
+        }
+
+        // --- SETUP TAMPILAN ---
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JTextArea txt = new JTextArea(teksTampilan);
+        txt.setEditable(false);
+        txt.setLineWrap(true);
+        txt.setWrapStyleWord(true);
+        txt.setFont(new java.awt.Font("Monospaced", 0, 12)); 
+        
+        JScrollPane scroll = new JScrollPane(txt);
+        scroll.setPreferredSize(new Dimension(450, 400));
+        panel.add(scroll, BorderLayout.CENTER);
+
+        if (foto != null && !foto.isEmpty() && !foto.equals("-")) {
+            try {
+                JLabel lblFoto = new JLabel();
+                ImageIcon icon = new ImageIcon(foto);
+                Image img = icon.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                lblFoto.setIcon(new ImageIcon(img));
+                panel.add(lblFoto, BorderLayout.EAST);
+            } catch (Exception e) {}
+        }
+
+        JOptionPane.showMessageDialog(this, panel, "Detail", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Kesalahan: " + e.getMessage());
+    }
+    
+    tabel_pengaduan.clearSelection();
+    tabel_feedback.clearSelection();
             // TODO add your handling code here:
     }//GEN-LAST:event_detailActionPerformed
+
+    private void tabel_feedbackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_feedbackMouseClicked
+    tabel_pengaduan.clearSelection();
+    int baris = tabel_pengaduan.getSelectedRow();
+    if (baris == -1) return; // kalau belum pilih baris
+
+    try {
+
+        // ================= BASIC DATA =================
+        txt_id.setText(
+            tabel_pengaduan.getValueAt(baris, 0) != null ?
+            tabel_pengaduan.getValueAt(baris, 0).toString() : ""
+        );
+
+        txt_NIK.setText(
+            tabel_pengaduan.getValueAt(baris, 1) != null ?
+            tabel_pengaduan.getValueAt(baris, 1).toString() : ""
+        );
+
+        txt_nama.setText(
+            tabel_pengaduan.getValueAt(baris, 2) != null ?
+            tabel_pengaduan.getValueAt(baris, 2).toString() : ""
+        );
+
+        txt_pengaduan.setText(
+            tabel_pengaduan.getValueAt(baris, 4) != null ?
+            tabel_pengaduan.getValueAt(baris, 4).toString() : ""
+        );
+
+        // ================= TANGGAL =================
+        if (tabel_pengaduan.getValueAt(baris, 3) != null) {
+            String s = tabel_pengaduan.getValueAt(baris, 3).toString();
+            java.util.Date date =
+                new java.text.SimpleDateFormat("yyyy-MM-dd").parse(s);
+            txt_tgl.setDate(date);
+        } else {
+            txt_tgl.setDate(null);
+        }
+
+        // ================= STATUS =================
+        if (tabel_pengaduan.getValueAt(baris, 7) != null) {
+            String status_tabel =
+                tabel_pengaduan.getValueAt(baris, 7).toString();
+            cmb_status.setSelectedItem(status_tabel);
+        }
+
+        // ================= FOTO =================
+        if (tabel_pengaduan.getValueAt(baris, 6) != null) {
+            String foto =
+                tabel_pengaduan.getValueAt(baris, 6).toString();
+
+            if (!foto.equals("")) {
+                ImageIcon icon = new ImageIcon(foto);
+                Image img = icon.getImage().getScaledInstance(
+                        lbl_foto.getWidth(),
+                        lbl_foto.getHeight(),
+                        Image.SCALE_SMOOTH
+                );
+                lbl_foto.setIcon(new ImageIcon(img));
+            } else {
+                lbl_foto.setIcon(null);
+            }
+        } else {
+            lbl_foto.setIcon(null);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null,
+            "Gagal mengambil data tabel: " + e.getMessage());
+    }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabel_feedbackMouseClicked
 
     private void lokasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lokasiActionPerformed
         // TODO add your handling code here:
@@ -645,20 +918,21 @@ tabel_pengaduan.clearSelection();
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TanggapanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TanggapanAdmin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TanggapanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TanggapanAdmin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TanggapanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TanggapanAdmin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TanggapanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TanggapanAdmin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TanggapanAdmin().setVisible(true);
+                new TanggapanAdmin1().setVisible(true);
             }
         });
     }
@@ -678,15 +952,19 @@ tabel_pengaduan.clearSelection();
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lbl_foto;
     private javax.swing.JTextField lokasi;
+    private javax.swing.JTable tabel_feedback;
     private javax.swing.JTable tabel_pengaduan;
     private javax.swing.JTextField txt_NIK;
     private javax.swing.JTextField txt_cari;
     private javax.swing.JTextField txt_id;
+    private javax.swing.JTextField txt_nama;
     private javax.swing.JTextField txt_nama_petugas;
     private javax.swing.JTextArea txt_pengaduan;
     private javax.swing.JTextArea txt_tanggapan;
+    private com.toedter.calendar.JDateChooser txt_tgl;
     private com.toedter.calendar.JDateChooser txt_tglpengaduan;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables

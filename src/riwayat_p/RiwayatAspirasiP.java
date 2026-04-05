@@ -52,6 +52,7 @@ public class RiwayatAspirasiP extends javax.swing.JFrame {
     model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori");
     model.addColumn("Status");
+    model.addColumn("Feedback");
 
     try {
         int no = 1;
@@ -81,7 +82,8 @@ public class RiwayatAspirasiP extends javax.swing.JFrame {
                 res.getString("nama"),
                 res.getString("isi_aspirasi"),
                 res.getString("kategori"),
-                res.getString("status")
+                res.getString("status"),
+                res.getString("feedback")
             });
         }
 
@@ -225,6 +227,7 @@ public class RiwayatAspirasiP extends javax.swing.JFrame {
     model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori"); // Tambahkan ini
     model.addColumn("Status");
+    model.addColumn("Feedback");
 
     try {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -250,7 +253,8 @@ public class RiwayatAspirasiP extends javax.swing.JFrame {
                 res.getString("nama"), 
                 res.getString("isi_aspirasi"), 
                 res.getString("kategori"), // Tambahkan ini
-                res.getString("status")
+                res.getString("status"),
+                res.getString("Feedback")
             });
         }
         tb_riwayat.setModel(model);
@@ -329,6 +333,7 @@ public class RiwayatAspirasiP extends javax.swing.JFrame {
     model.addColumn("Isi Aspirasi");
     model.addColumn("Kategori"); 
     model.addColumn("Status");
+    model.addColumn("Feedback");
 
     try {
         String cari = txt_cari_nama.getText();
@@ -353,7 +358,8 @@ public class RiwayatAspirasiP extends javax.swing.JFrame {
                 res.getString("nama"), 
                 res.getString("isi_aspirasi"), 
                 res.getString("kategori"), 
-                res.getString("status")
+                res.getString("status"),
+                res.getString("feedback")
             });
         }
         tb_riwayat.setModel(model);
